@@ -15,7 +15,13 @@ class CreatePartiesTable extends Migration
     {
         Schema::create('parties', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->nullable($value = false)->string('cpf', 11)->unique();
+            $table->nullable($value = false)->string('name', 120);
+            $table->nullable($value = false)->string('mail', 50)->unique();
+            $table->nullable($value = false)->string('phone', 15);
             $table->timestamps();
+
+            $table->primary('cpf');
         });
     }
 
