@@ -24,8 +24,14 @@ class PartyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        try{
+            return Party::create($request->all());
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

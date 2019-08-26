@@ -25,7 +25,13 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            return Contract::create($request->all());
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
