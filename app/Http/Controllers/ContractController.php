@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -13,7 +14,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-        //
+        return Contract::get();
     }
 
     /**
@@ -35,7 +36,10 @@ class ContractController extends Controller
      */
     public function show($id)
     {
-        //
+        $contract = Contract::find($id);
+        $contract->parties;
+        return $contract;
+
     }
 
     /**

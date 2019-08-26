@@ -36,7 +36,9 @@ class PartyController extends Controller
      */
     public function show($id)
     {
-        //
+        $party = Party::find($id);
+        $party->contracts;
+        return $party;
     }
 
     /**
