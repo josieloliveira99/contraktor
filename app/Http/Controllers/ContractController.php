@@ -62,7 +62,20 @@ class ContractController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $contract = Contract::find($id);
+        
+        if(!$contract){
+            return response()->json(['message'=>'Not found'], 404);
+        }
+
+        try{
+            $contract->update($request->all());
+            return [];
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

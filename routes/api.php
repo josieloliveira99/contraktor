@@ -20,11 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/contracts', 'ContractController@index');
 Route::get('/contracts/{student}', 'ContractController@show');
 Route::post('/contracts', 'ContractController@store');
-Route::put('/contracts', 'ContractController@update');
+Route::put('/contracts/{contract}', 'ContractController@update');
 Route::delete('/contracts', 'ContractController@destroy');
 
 Route::get('/parties', 'PartyController@index');
 Route::get('/parties/{party}', 'PartyController@show');
 Route::post('/parties', 'PartyController@store');
-Route::put('/parties', 'PartyController@update');
+Route::put('/parties/{party}', 'PartyController@update');
 Route::delete('/parties', 'PartyController@destroy');

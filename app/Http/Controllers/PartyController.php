@@ -62,7 +62,20 @@ class PartyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $party = Party::find($id);
+        
+        if(!$party){
+            return response()->json(['message'=>'Not found'], 404);
+        }
+
+        try{
+            $party->update($request->all());
+            return [];
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
