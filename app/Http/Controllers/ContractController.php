@@ -37,8 +37,13 @@ class ContractController extends Controller
     public function show($id)
     {
         $contract = Contract::find($id);
-        $contract->parties;
-        return $contract;
+        
+        if($contract){
+            $contract->parties;
+            return response()->json($contract, 302);
+        }else{
+            return response()->json(['message'=>'Not found'], 404);
+        }
 
     }
 

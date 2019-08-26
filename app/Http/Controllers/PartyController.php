@@ -37,8 +37,14 @@ class PartyController extends Controller
     public function show($id)
     {
         $party = Party::find($id);
-        $party->contracts;
-        return $party;
+
+        if($party){
+            $party->contracts;
+            return response()->json($party, 302);
+        }else{
+            return response()->json(['message'=>'Not found'], 404);
+        }
+        
     }
 
     /**
