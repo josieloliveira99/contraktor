@@ -20,8 +20,6 @@ class CreatePartiesTable extends Migration
             $table->nullable($value = false)->string('mail', 50)->unique();
             $table->nullable($value = false)->string('phone', 15);
             $table->timestamps();
-
-            $table->primary('cpf');
         });
     }
 
