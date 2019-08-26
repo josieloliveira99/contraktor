@@ -86,6 +86,19 @@ class PartyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $party = Party::find($id);
+        
+        if(!$party){
+            return response()->json(['message'=>'Not found'], 404);
+        }
+
+        try{
+            $party->delete();
+            return [];
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -86,6 +86,19 @@ class ContractController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contract = Contract::find($id);
+        
+        if(!$contract){
+            return response()->json(['message'=>'Not found'], 404);
+        }
+
+        try{
+            $contract->delete();
+            return [];
+        }catch(\Throwable $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
