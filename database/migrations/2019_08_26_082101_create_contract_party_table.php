@@ -16,10 +16,10 @@ class CreateContractPartyTable extends Migration
         Schema::create('contract_party', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->unsignedInteger('contract_id');
+            $table->unsignedBigInteger('contract_id');
             $table->foreign('contract_id')->references('id')->on('contracts');
             
-            $table->unsignedInteger('party_id');
+            $table->unsignedBigInteger('party_id');
             $table->foreign('party_id')->references('id')->on('parties');
             
             $table->timestamps();

@@ -15,10 +15,10 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->nullable($value = false)->string('title', 120);
-            $table->nullable($value = false)->dateTime('start_at');
-            $table->nullable($value = false)->dateTime('end_at');
-            $table->nullable($value = false)->string('pdf_file', 150);
+            $table->string('title', 120)->nullable($value = false);
+            $table->dateTime('start_at')->nullable($value = false);
+            $table->dateTime('end_at')->nullable($value = false);
+            $table->string('pdf_file', 150);
             $table->timestamps();
         });
     }

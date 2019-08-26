@@ -15,10 +15,10 @@ class CreatePartiesTable extends Migration
     {
         Schema::create('parties', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->nullable($value = false)->string('cpf', 11)->unique();
-            $table->nullable($value = false)->string('name', 120);
-            $table->nullable($value = false)->string('mail', 50)->unique();
-            $table->nullable($value = false)->string('phone', 15);
+            $table->string('cpf', 11)->unique()->nullable($value = false);
+            $table->string('name', 120)->nullable($value = false);
+            $table->string('mail', 50)->unique()->nullable($value = false);
+            $table->string('phone', 15)->nullable($value = false);
             $table->timestamps();
         });
     }
