@@ -66137,16 +66137,20 @@ function (_Component) {
       data.append('file', this.state.archive);
       var url = "http://localhost:8000/api/contracts"; // fetch("http://localhost:8000/api/contracts", {method: 'POST', mode: 'no-cors', body: data})
       // .then(res => res.json())
+      //   fetch(url, {
+      //     method: 'post',
+      //     // mode: 'no-cors',
+      //     body: data
+      //   })
+      //   .then(function(valor) {
+      //     alert("cadastrado com sucesso")
+      //     console.log(valor)
+      //    }, function(motivo) {
+      //     console.log(motivo)
+      //  });
 
-      fetch(url, {
-        method: 'post',
-        mode: 'no-cors',
-        body: data
-      }).then(function (valor) {
-        alert("cadastrado com sucesso");
-        console.log(valor);
-      }, function (motivo) {
-        console.log(motivo);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(url, data).then(function (response) {
+        console.log(response);
       });
     }
   }, {

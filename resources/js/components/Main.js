@@ -55,17 +55,22 @@ class Main extends Component {
       // fetch("http://localhost:8000/api/contracts", {method: 'POST', mode: 'no-cors', body: data})
       // .then(res => res.json())
       
-      fetch(url, {
-        method: 'post',
-        mode: 'no-cors',
-        body: data
-      })
-      .then(function(valor) {
-        alert("cadastrado com sucesso")
-        console.log(valor)
-       }, function(motivo) {
-        console.log(motivo)
-     });
+    //   fetch(url, {
+    //     method: 'post',
+    //     // mode: 'no-cors',
+    //     body: data
+    //   })
+    //   .then(function(valor) {
+    //     alert("cadastrado com sucesso")
+    //     console.log(valor)
+    //    }, function(motivo) {
+    //     console.log(motivo)
+    //  });
+
+    axios.post(url, data)
+    .then(function(response){
+      console.log(response)
+    }); 
   }
       
     render() {
