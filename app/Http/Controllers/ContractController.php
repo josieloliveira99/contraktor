@@ -25,9 +25,29 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $path = $request->file->store('pdfs','public');
+            if($path){
+                
+                $data["title"]    = $request->title;
+                $data["start_at"] = $request->start_at;
+                $data["end_at"]   = $request->end_at;
+                $data["pdf_file"] = $path;
+
+                try{
+                    return Contract::create($data);
+                }catch(\Throwable $e){
+                    return response()->json([
+                        'message' => $e->getMessage()
+                    ], 500);
+                }
+
+            }
+        }
         //dd($request->file('file'));
-        $path = $request->file->store('pdfs','public');
-        return response()->json(["teste","josiel"], 200);
+        //$path = $request->file->store('pdfs','public');
+        //return response()->json($request->all(), 200);
+
         // try{
         //     return Contract::create($request->all());
         // }catch(\Throwable $e){
