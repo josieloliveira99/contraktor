@@ -66091,7 +66091,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Main).call(this, props));
     _this.state = {
-      image: ''
+      archive: ''
     };
     _this.fileUploadHandler = _this.fileUploadHandler.bind(_assertThisInitialized(_this));
     _this.onChangeHandler = _this.onChangeHandler.bind(_assertThisInitialized(_this));
@@ -66100,37 +66100,53 @@ function (_Component) {
   }
 
   _createClass(Main, [{
-    key: "fileUploadHandler",
-    value: function fileUploadHandler(e) {
-      e.preventDefault();
-      this.fileUpload(this.state.image);
-    }
-  }, {
     key: "onChangeHandler",
     value: function onChangeHandler(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
+      console.log("files", files);
       this.setState({
-        image: files[0]
+        archive: files[0]
       });
     }
   }, {
+    key: "fileUploadHandler",
+    value: function fileUploadHandler(e) {
+      e.preventDefault();
+      this.fileUpload(this.state.file);
+    }
+  }, {
     key: "fileUpload",
-    value: function fileUpload(image) {
+    value: function fileUpload(file) {
       //const url = 'http://localhost:8000/api/fileupload';
+      // const data = new FormData()
+      // data.append('file', this.state.image)
+      // // console.log(formData)
+      // const url = "http://localhost:8000/api/contracts"    
+      // // return post(url, data).then(response => console.log(response))
+      // fetch(url, {
+      //     method: 'POST',
+      //     mode: 'no-cors',
+      //     body: data
+      // }).then(function(res){
+      //     console.log("1",res)
+      // }).catch(function(res){
+      //     console.log("0",res)
+      // })
       var data = new FormData();
-      data.append('file', this.state.image); // console.log(formData)
-
-      var url = "http://localhost:8000/api/contracts"; // return post(url, data).then(response => console.log(response))
+      data.append('file', this.state.archive);
+      var url = "http://localhost:8000/api/contracts"; // fetch("http://localhost:8000/api/contracts", {method: 'POST', mode: 'no-cors', body: data})
+      // .then(res => res.json())
 
       fetch(url, {
-        method: 'POST',
+        method: 'post',
         mode: 'no-cors',
         body: data
-      }).then(function (res) {
-        console.log("1", res);
-      })["catch"](function (res) {
-        console.log("0", res);
+      }).then(function (valor) {
+        alert("cadastrado com sucesso");
+        console.log(valor);
+      }, function (motivo) {
+        console.log(motivo);
       });
     }
   }, {
@@ -66143,9 +66159,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        method: "post",
-        action: "#",
-        id: "#"
+        method: "post"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group files"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Upload Your File "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -66160,10 +66174,7 @@ function (_Component) {
         type: "button",
         className: "btn btn-info",
         onClick: this.fileUploadHandler
-      }, "Upload File"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "storage/pdfs/c3UhuP4EvIztEDCX3PMxkJ05D2yCpFpWvhIhdIsu.pdf",
-        download: true
-      }, "download"))));
+      }, "Upload File"))))));
     }
   }]);
 

@@ -25,7 +25,9 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        $request->file->store('pdfs');
+        //dd($request->file('file'));
+        $path = $request->file->store('pdfs','public');
+        return response()->json(["teste","josiel"], 200);
         // try{
         //     return Contract::create($request->all());
         // }catch(\Throwable $e){
