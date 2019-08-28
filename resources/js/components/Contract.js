@@ -28,6 +28,7 @@ class Contract extends Component {
     
     componentDidMount(){
       let id = this.props.id ? this.props.id : ''
+      console.log(id)
       if(this.props.id){
         let url = `http://127.0.0.1:8000/api/contracts/${id}`
         axios.get(url)
@@ -40,6 +41,8 @@ class Contract extends Component {
           })
         });
       }  
+
+      console.log(this.state)
 
       let urlParties = `http://127.0.0.1:8000/api/parties`
       axios.get(urlParties)
@@ -126,7 +129,7 @@ class Contract extends Component {
             window.location.href="/contract";
           }else{
             alert("ocorreu um erro ao cadastrar")
-          }o
+          }
         })
       }
     }

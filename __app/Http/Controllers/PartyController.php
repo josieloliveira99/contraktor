@@ -14,8 +14,7 @@ class PartyController extends Controller
      */
     public function index()
     {
-        //dd(Party::get()->toArray());
-        return Party::get()->toArray();
+        return Party::get();
     }
 
     /**
@@ -47,7 +46,7 @@ class PartyController extends Controller
 
         if($party){
             $party->contracts;
-            return response()->json($party);
+            return response()->json($party, 302);
         }else{
             return response()->json(['message'=>'Not found'], 404);
         }

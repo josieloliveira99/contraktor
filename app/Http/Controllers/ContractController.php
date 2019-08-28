@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use App\Models\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ContractController extends Controller
 {
@@ -25,6 +28,15 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+        $arr_pivot = json_decode($request->pivot);
+        // foreach($arr_pivot as $relation){
+        //     //$contract_saved->parties()->create(['contract_id' => $contract_saved->id, 'party_id' => $relation->value]);
+        //     //echo $relation->id;
+        //     return $relation->value;
+        // }
+        // return;
+
+
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $path = $request->file->store('pdfs','public');
             if($path){
@@ -35,7 +47,25 @@ class ContractController extends Controller
                 $data["pdf_file"] = $path;
 
                 try{
-                    return Contract::create($data);
+                    $contract_saved = Contract::create($data);
+                    $contract_saved_id = $contract_saved->id;
+                    if($contract_saved){
+                        $contract = Contract::find($contract_saved_id);
+                        foreach($arr_pivot as $party){
+                            try{
+                                // $date = date('Y/m/d h:i:s', time());
+                                // DB::insert('insert into contract_party (contract_id, party_id, created_at, updated_at) values (?, ?, ?, ?)', [$contract_saved_id, $relation->value, $date, $date]);
+                                // $contract->relations->create(['contract_id' => $contract_saved_id, 'party_id' => $relation->value]);
+                                $contract->parties()->attach($party->value);
+                            }catch(\Throwable $e){
+                                return response()->json([
+                                    'message' => $e->getMessage()
+                                ], 500);
+                            }
+                            
+                        }
+                    }
+                    return $contract_saved;
                 }catch(\Throwable $e){
                     return response()->json([
                         'message' => $e->getMessage()
@@ -69,7 +99,7 @@ class ContractController extends Controller
         
         if($contract){
             $contract->parties;
-            return response()->json($contract, 302);
+            return response()->json($contract);
         }else{
             return response()->json(['message'=>'Not found'], 404);
         }
@@ -86,13 +116,34 @@ class ContractController extends Controller
     public function update(Request $request, $id)
     {
         $contract = Contract::find($id);
-        
+        //return $contract->pdf_file;
         if(!$contract){
             return response()->json(['message'=>'Not found'], 404);
         }
 
+        $data["title"]    = $request->title;
+        $data["start_at"] = $request->start_at;
+        $data["end_at"]   = $request->end_at;
+
+        if($request->hasFile('file')){
+            Storage::delete($contract->pdf_file);
+            $path = $request->file->store('pdfs','public');
+            if($path){
+                $data["pdf_file"] = $path; 
+            }
+        }else{
+            $data["pdf_file"] = $contract->pdf_file;
+        }
+
         try{
-            $contract->update($request->all());
+            $contract->update(
+                [
+                    'title' => $data["title"],
+                    'start_at' => $data["start_at"],
+                    'end_at' => $data["end_at"],
+                    'pdf_file' => $data["pdf_file"]
+                ]
+            );
             return [];
         }catch(\Throwable $e){
             return response()->json([

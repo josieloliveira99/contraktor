@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Party;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 
-class PartyController extends Controller
+class ContractController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,7 @@ class PartyController extends Controller
      */
     public function index()
     {
-        //dd(Party::get()->toArray());
-        return Party::get()->toArray();
+        return Contract::get();
     }
 
     /**
@@ -25,14 +24,37 @@ class PartyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        try{
-            return Party::create($request->all());
-        }catch(\Throwable $e){
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 500);
+    {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $path = $request->file->store('pdfs','public');
+            if($path){
+                
+                $data["title"]    = $request->title;
+                $data["start_at"] = $request->start_at;
+                $data["end_at"]   = $request->end_at;
+                $data["pdf_file"] = $path;
+
+                try{
+                    return Contract::create($data);
+                }catch(\Throwable $e){
+                    return response()->json([
+                        'message' => $e->getMessage()
+                    ], 500);
+                }
+
+            }
         }
+        //dd($request->file('file'));
+        //$path = $request->file->store('pdfs','public');
+        //return response()->json($request->all(), 200);
+
+        // try{
+        //     return Contract::create($request->all());
+        // }catch(\Throwable $e){
+        //     return response()->json([
+        //         'message' => $e->getMessage()
+        //     ], 500);
+        // }
     }
 
     /**
@@ -43,15 +65,15 @@ class PartyController extends Controller
      */
     public function show($id)
     {
-        $party = Party::find($id);
-
-        if($party){
-            $party->contracts;
-            return response()->json($party);
+        $contract = Contract::find($id);
+        
+        if($contract){
+            $contract->parties;
+            return response()->json($contract);
         }else{
             return response()->json(['message'=>'Not found'], 404);
         }
-        
+
     }
 
     /**
@@ -63,14 +85,14 @@ class PartyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $party = Party::find($id);
+        $contract = Contract::find($id);
         
-        if(!$party){
+        if(!$contract){
             return response()->json(['message'=>'Not found'], 404);
         }
 
         try{
-            $party->update($request->all());
+            $contract->update($request->all());
             return [];
         }catch(\Throwable $e){
             return response()->json([
@@ -87,14 +109,14 @@ class PartyController extends Controller
      */
     public function destroy($id)
     {
-        $party = Party::find($id);
+        $contract = Contract::find($id);
         
-        if(!$party){
+        if(!$contract){
             return response()->json(['message'=>'Not found'], 404);
         }
 
         try{
-            $party->delete();
+            $contract->delete();
             return [];
         }catch(\Throwable $e){
             return response()->json([

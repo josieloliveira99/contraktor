@@ -11,5 +11,4 @@ class Contract extends Model
     public function parties(){
         return $this->belongsToMany('App\Models\Party')->withTimestamps();
     }
-
 }

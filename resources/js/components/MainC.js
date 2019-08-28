@@ -3,28 +3,39 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import Contract from './Contract';
-// import Party from './Party';
-// import Home from './Home';
-
+import Party from './Party';
+import SearchParty from './SearchParty';
+import SearchContract from './SearchContract';
 
 class MainC extends Component {
-
-  constructor(props) {
-    super(props);
-  }  
 
   render() {
     return ( 
       <BrowserRouter>
         <div>
             <nav className="navbar navbar-light navbar-expand-md navigation-clean">
-                <div className="container"><a className="navbar-brand" href="#">Contraktor</a><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button>
+                <div className="container"><Link to="/" className="navbar-brand" >Contraktor</Link><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button>
                     <div className="collapse navbar-collapse"
                         id="navcol-1">
                         <ul className="nav navbar-nav ml-auto">
                           <li className="nav-item" role="presentation">
+                            <Link className="nav-link" to="/search-party">
+                              Search Party
+                            </Link>
+                          </li>
+                          <li className="nav-item" role="presentation">
+                            <Link className="nav-link" to="/search-contract">
+                              Search Contract
+                            </Link>
+                          </li>
+                          <li className="nav-item" role="presentation">
                             <Link className="nav-link" to="/contract">
                               Contratos
+                            </Link>
+                          </li>
+                          <li className="nav-item" role="presentation">
+                            <Link className="nav-link" to="/contract/edit/1">
+                              editar
                             </Link>
                           </li>
                           <li className="nav-item" role="presentation">
@@ -34,26 +45,16 @@ class MainC extends Component {
                     </div>
                 </div>
             </nav>
-        </div>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="hero">
-                <h1 className="hero__title">Gestão de Contratos e Assinatura Digital</h1>
-              </div>
-              <div id="searchform--one" className="form-group has-search">
-                <span className="fa fa-search form-control-feedback"></span>
-                <input type="search" className="form-control" placeholder="Digite aqui sua pesquisa"/>
-              </div>      
-            </div>
-          </div>
-        </div>
+        </div> 
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <main>
-                <Route exact path="/"/>
+                
+                
                 <Route exact path="/contract" component={OperationContract}/>
+                <Route exact path="/search-party" component={SearchParty}/>
+                <Route exact path="/search-contract" component={SearchContract}/>
                 <Route exact path="/contract/:action" component={OperationContract}/>
                 <Route exact path="/contract/:action/:id" component={OperationContract}/>
                 <Route exact path="/party" component={OperationParty}/>
@@ -88,13 +89,53 @@ const OperationParty = ({match}) => {
   )
 }
 
+const Table = (props)=>{
+  return(
+    <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>CPF</th>
+                <th>E-mail</th>
+                <th>Telephone</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+            </tr>
+        </thead>
+        <tbody>
+          {
+            [{name: "Tiger Nixon", lastname: "teste", cpf: "05387925907", mail:"josielqo@gmail.com", phone: "41 9948-2246"}].map((data)=>{
+              return(
+                <React.Fragment>
+                <tr>
+                  <td>{data.name}</td>
+                  <td>{data.lastname}</td>
+                  <td>{data.cpf}</td>
+                  <td>{data.mail}</td>
+                  <td>{data.phone}</td>
+                  <td>X</td>
+                  <td>X</td>
+                </tr>
+                </React.Fragment>
+              )
+            })
+          }
+        </tbody>
+    </table>
+  )
+}
+
+
+
+
 // const Contract = ()=> {
 //   return <h1>Contract</h1>
 // }
 
-const Party = ()=> {
-  return <h1>Party</h1>
-}
+// const Party = ()=> {
+//   return <h1>Party</h1>
+// }
 
 export default MainC;
 

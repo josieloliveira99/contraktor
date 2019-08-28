@@ -25,6 +25,8 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
-        "react-router-dom": "^5.0.1"
+        "moment": "^2.24.0",
+        "react-router-dom": "^5.0.1",
+        "react-select": "^3.0.4"
     }
 }

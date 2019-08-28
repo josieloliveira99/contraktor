@@ -15,7 +15,17 @@
 //     return view('main');
 // });
 
-Route::get( '/{path?}', function(){
-    return view( 'main' );
-} )->where('path', '.*');
+// Route::get( '/{path?}/{edit?}/{id?}', function(){
+//     return view( 'main' );
+// } )->where('path', '.*')->where('edit', '.*')->where('id', '.*')
+// ;
+
+Route::any('{all}', function () {
+    return view('main');
+})
+->where(['all' => '.*']);
+
+// Route::get( '/{path?}', function(){
+//     return view( 'main' );
+// } )->where('path', '.*');
 
