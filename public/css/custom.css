@@ -59,3 +59,7 @@ input[type=file].form-control{
   color: #000;
   border-color: #000
 }
+
+label{
+  color: #000
+}

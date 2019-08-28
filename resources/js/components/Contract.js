@@ -120,7 +120,13 @@ class Contract extends Component {
       }else{
         axios.post(url, data)
         .then(function(response){
-          console.log(response)
+          if(response.status == 201){
+            // jQuery("input").val('')
+            alert("cadastrado com sucesso")
+            window.location.href="/contract";
+          }else{
+            alert("ocorreu um erro ao cadastrar")
+          }o
         })
       }
     }
@@ -167,11 +173,11 @@ class Contract extends Component {
                     <input type = "date" name = "contractEnd" className = "form-control" value={contractEnd} onChange = {this.handleInputChange}/> 
                   </div> 
                   <div className = "form-group files">
-                    <label> Upload Your File </label> 
+                    <label>Selecione o contrato</label> 
                     <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
                   </div> 
                   <div className = "col-md-6 pull-right">
-                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Upload File</button>
+                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Salvar</button>
                   </div> 
                 </form>
         </div>

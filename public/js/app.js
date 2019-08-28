@@ -95367,7 +95367,15 @@ function (_Component) {
         });
       } else {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(url, data).then(function (response) {
-          console.log(response);
+          if (response.status == 201) {
+            // jQuery("input").val('')
+            alert("cadastrado com sucesso");
+            window.location.href = "/contract";
+          } else {
+            alert("ocorreu um erro ao cadastrar");
+          }
+
+          o;
         });
       }
     }
@@ -95432,7 +95440,7 @@ function (_Component) {
         onChange: this.handleInputChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group files"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, " Upload Your File "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Selecione o contrato"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "file",
         name: "file",
         className: "form-control",
@@ -95444,7 +95452,7 @@ function (_Component) {
         type: "button",
         className: "btn btn-info",
         onClick: this.fileUploadHandler
-      }, "Upload File"))))));
+      }, "Salvar"))))));
     }
   }]);
 
