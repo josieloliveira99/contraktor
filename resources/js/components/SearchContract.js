@@ -17,6 +17,8 @@ class SearchContract extends Component {
     }
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this)
+    this.getData = this.getData.bind(this)
+    
     // this.toDelete = this.toDelete.bind(this)
   }  
 
@@ -28,9 +30,11 @@ class SearchContract extends Component {
 
   handleSubmitSearch(e){
     e.preventDefault()
-    console.log("submeteu")
+    this.getData()
+  }
+
+  getData(){
     const {searchInputValue} = this.state 
-    console.log(searchInputValue)
     let url  = `http://127.0.0.1:8000/api/search/contract?q=${searchInputValue}`
     axios.get(url)
       .then((response) => {
@@ -55,7 +59,7 @@ class SearchContract extends Component {
               </div>      
             </div>
             {
-              (this.state.searchResult).length != 0 && <Table data={this.state.searchResult}/>
+              (this.state.searchResult).length != 0 && <Table getData={this.getData} data={this.state.searchResult}/>
             }
           </div>
         </div>    
@@ -76,6 +80,8 @@ class SearchContract extends Component {
       axios.delete(url)
         .then((response) => {
           console.log(response);
+          this.props.getData()
+          //this.removeFromList(e)
           //if(response.status == 204){
             // this.setState({
             //   searchResult: this.state.searchResult.filter(el => el !== e)

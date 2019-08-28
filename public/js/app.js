@@ -95977,7 +95977,8 @@ function (_Component) {
       searchResult: []
     };
     _this.handleSearchChange = _this.handleSearchChange.bind(_assertThisInitialized(_this));
-    _this.handleSubmitSearch = _this.handleSubmitSearch.bind(_assertThisInitialized(_this)); // this.toDelete = this.toDelete.bind(this)
+    _this.handleSubmitSearch = _this.handleSubmitSearch.bind(_assertThisInitialized(_this));
+    _this.getData = _this.getData.bind(_assertThisInitialized(_this)); // this.toDelete = this.toDelete.bind(this)
 
     return _this;
   }
@@ -95998,12 +95999,15 @@ function (_Component) {
   }, {
     key: "handleSubmitSearch",
     value: function handleSubmitSearch(e) {
+      e.preventDefault();
+      this.getData();
+    }
+  }, {
+    key: "getData",
+    value: function getData() {
       var _this3 = this;
 
-      e.preventDefault();
-      console.log("submeteu");
       var searchInputValue = this.state.searchInputValue;
-      console.log(searchInputValue);
       var url = "http://127.0.0.1:8000/api/search/contract?q=".concat(searchInputValue);
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(url).then(function (response) {
         _this3.setState({
@@ -96040,6 +96044,7 @@ function (_Component) {
         placeholder: "Digite aqui sua pesquisa",
         onChange: this.handleSearchChange
       }))), this.state.searchResult.length != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
+        getData: this.getData,
         data: this.state.searchResult
       })));
     }
@@ -96066,19 +96071,25 @@ function (_Component2) {
   _createClass(Table, [{
     key: "toDelete",
     value: function toDelete(e, f) {
+      var _this5 = this;
+
       var url = "http://127.0.0.1:8000/api/contracts/".concat(e, "}");
       axios__WEBPACK_IMPORTED_MODULE_3___default.a["delete"](url).then(function (response) {
-        console.log(response); //if(response.status == 204){
+        console.log(response);
+
+        _this5.props.getData(); //this.removeFromList(e)
+        //if(response.status == 204){
         // this.setState({
         //   searchResult: this.state.searchResult.filter(el => el !== e)
         // })
         //}
+
       });
     }
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       console.log(this.props);
       var parties = this.props.data;
@@ -96091,7 +96102,7 @@ function (_Component2) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: data.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.start_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.end_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: _this5.toDelete.bind(_this5, data.id)
+          onClick: _this6.toDelete.bind(_this6, data.id)
         }, "X"))));
       })));
     }
