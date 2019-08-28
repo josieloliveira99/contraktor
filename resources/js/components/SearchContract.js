@@ -17,6 +17,7 @@ class SearchContract extends Component {
     }
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this)
+    // this.toDelete = this.toDelete.bind(this)
   }  
 
   handleSearchChange(event) {
@@ -30,7 +31,7 @@ class SearchContract extends Component {
     console.log("submeteu")
     const {searchInputValue} = this.state 
     console.log(searchInputValue)
-    let url  = `http://127.0.0.1:8000/api/search/party?q=${searchInputValue}`
+    let url  = `http://127.0.0.1:8000/api/search/contract?q=${searchInputValue}`
     axios.get(url)
       .then((response) => {
         this.setState({searchResult: response.data}, ()=> console.log(this.state));
@@ -62,43 +63,65 @@ class SearchContract extends Component {
   }
 }
 
-const Table = (props)=>{
-  console.log(props)
-  const parties = props.data
-  return(
-    <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th>CPF</th>
-                <th>E-mail</th>
-                <th>Telephone</th>
-                <th>Editar</th>
-                <th>Excluir</th>
-            </tr>
-        </thead>
-        <tbody>
-          {
-            parties.map((data)=>{
-              return(
-                <React.Fragment>
-                <tr>
-                  <td>{data.name}</td>
-                  <td>{data.lastname}</td>
-                  <td>{data.cpf}</td>
-                  <td>{data.mail}</td>
-                  <td>{data.phone}</td>
-                  <td><Link to={`/party/edit/${data.id}`}>X</Link></td>
-                  <td>X</td>
-                </tr>
-                </React.Fragment>
-              )
-            })
-          }
-        </tbody>
-    </table>
-  )
+
+
+  class Table extends Component {
+    constructor(props) {
+      super(props);
+      this.toDelete = this.toDelete.bind(this)
+    }
+
+    toDelete(e,f){
+      let url  = `http://127.0.0.1:8000/api/contracts/${e}}`
+      axios.delete(url)
+        .then((response) => {
+          console.log(response);
+          //if(response.status == 204){
+            // this.setState({
+            //   searchResult: this.state.searchResult.filter(el => el !== e)
+            // })
+          //}
+        })
+    }
+  
+  render(){
+    console.log(this.props)
+    const parties = this.props.data
+    return(
+      <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
+          <thead>
+              <tr>
+                  <th>Título</th>
+                  <th>Data de início</th>
+                  <th>Data de encerramento</th>
+                  <th>Contrato</th>
+                  {/* <th>Editar</th> */}
+                  <th>Excluir</th>
+              </tr>
+          </thead>
+          <tbody>
+            {
+              parties.map((data)=>{
+                return(
+                  <React.Fragment>
+                  <tr key={data.id}>
+                    <td>{data.title}</td>
+                    <td>{data.start_at}</td>
+                    <td>{data.end_at}</td>
+                    <td>{data.id}</td>
+                    {/* <td><Link to={`/contract/edit/${data.id}`}>X</Link></td> */}
+                    <td><button onClick={this.toDelete.bind(this,data.id)} >X</button></td>
+                  </tr>
+                  </React.Fragment>
+                )
+              })
+            }
+          </tbody>
+      </table>
+    )
+  }
+  
+  
 }
 
 export default SearchContract;

@@ -75,7 +75,6 @@ const Table = (props)=>{
                 <th>E-mail</th>
                 <th>Telephone</th>
                 <th>Editar</th>
-                <th>Excluir</th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +89,6 @@ const Table = (props)=>{
                   <td>{data.mail}</td>
                   <td>{data.phone}</td>
                   <td><Link to={`/party/edit/${data.id}`}>X</Link></td>
-                  <td>X</td>
                 </tr>
                 </React.Fragment>
               )

@@ -95977,7 +95977,8 @@ function (_Component) {
       searchResult: []
     };
     _this.handleSearchChange = _this.handleSearchChange.bind(_assertThisInitialized(_this));
-    _this.handleSubmitSearch = _this.handleSubmitSearch.bind(_assertThisInitialized(_this));
+    _this.handleSubmitSearch = _this.handleSubmitSearch.bind(_assertThisInitialized(_this)); // this.toDelete = this.toDelete.bind(this)
+
     return _this;
   }
 
@@ -96003,7 +96004,7 @@ function (_Component) {
       console.log("submeteu");
       var searchInputValue = this.state.searchInputValue;
       console.log(searchInputValue);
-      var url = "http://127.0.0.1:8000/api/search/party?q=".concat(searchInputValue);
+      var url = "http://127.0.0.1:8000/api/search/contract?q=".concat(searchInputValue);
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(url).then(function (response) {
         _this3.setState({
           searchResult: response.data
@@ -96047,20 +96048,57 @@ function (_Component) {
   return SearchContract;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-var Table = function Table(props) {
-  console.log(props);
-  var parties = props.data;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-    id: "example",
-    className: "table table-striped table-bordered",
-    cellSpacing: "0",
-    width: "100%"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Nome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sobrenome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "CPF"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "E-mail"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Telephone"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Editar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.cpf), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.mail), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.phone), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-      to: "/party/edit/".concat(data.id)
-    }, "X")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "X")));
-  })));
-};
+var Table =
+/*#__PURE__*/
+function (_Component2) {
+  _inherits(Table, _Component2);
+
+  function Table(props) {
+    var _this4;
+
+    _classCallCheck(this, Table);
+
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(Table).call(this, props));
+    _this4.toDelete = _this4.toDelete.bind(_assertThisInitialized(_this4));
+    return _this4;
+  }
+
+  _createClass(Table, [{
+    key: "toDelete",
+    value: function toDelete(e, f) {
+      var url = "http://127.0.0.1:8000/api/contracts/".concat(e, "}");
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a["delete"](url).then(function (response) {
+        console.log(response); //if(response.status == 204){
+        // this.setState({
+        //   searchResult: this.state.searchResult.filter(el => el !== e)
+        // })
+        //}
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this5 = this;
+
+      console.log(this.props);
+      var parties = this.props.data;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        id: "example",
+        className: "table table-striped table-bordered",
+        cellSpacing: "0",
+        width: "100%"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "T\xEDtulo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de in\xEDcio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de encerramento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Contrato"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
+          key: data.id
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.start_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.end_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: _this5.toDelete.bind(_this5, data.id)
+        }, "X"))));
+      })));
+    }
+  }]);
+
+  return Table;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (SearchContract);
 
@@ -96204,10 +96242,10 @@ var Table = function Table(props) {
     className: "table table-striped table-bordered",
     cellSpacing: "0",
     width: "100%"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Nome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sobrenome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "CPF"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "E-mail"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Telephone"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Editar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Nome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sobrenome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "CPF"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "E-mail"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Telephone"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Editar"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.cpf), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.mail), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.phone), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
       to: "/party/edit/".concat(data.id)
-    }, "X")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "X")));
+    }, "X"))));
   })));
 };
 

@@ -167,8 +167,15 @@ class ContractController extends Controller
         }
 
         try{
+            $data = $contract->parties()->get();
+            $contract->parties()->detach();
             $contract->delete();
-            return [];
+            
+            // if(! Contract::find($id)){
+            response()->json(['message'=>'Deleted with success!'], 204);
+            
+            // }
+
         }catch(\Throwable $e){
             return response()->json([
                 'message' => $e->getMessage()

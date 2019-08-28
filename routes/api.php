@@ -42,7 +42,7 @@ Route::get('/search/party', function(Request $request){
 
 Route::get('/search/contract', function(Request $request){
     $search   = Input::get('q');
-    $result   = Constract::where('title','LIKE','%'.$search.'%')
+    $result   = Contract::where('title','LIKE','%'.$search.'%')
                     ->get();
     return $result;
 });
