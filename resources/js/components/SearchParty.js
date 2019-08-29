@@ -66,7 +66,7 @@ const Table = (props)=>{
   console.log(props)
   const parties = props.data
   return(
-    <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
+    <table id="table-result-search" className="table table-striped table-bordered" cellSpacing="0" width="100%">
         <thead>
             <tr>
                 <th>Nome</th>

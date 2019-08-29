@@ -55322,6 +55322,297 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
+/***/ "./node_modules/pdfobject/pdfobject.js":
+/*!*********************************************!*\
+  !*** ./node_modules/pdfobject/pdfobject.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*global ActiveXObject, window, console, define, module, jQuery */
+//jshint unused:false, strict: false
+
+/*
+    PDFObject v2.1.1
+    https://github.com/pipwerks/PDFObject
+    Copyright (c) 2008-2018 Philip Hutchison
+    MIT-style license: http://pipwerks.mit-license.org/
+    UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
+*/
+
+(function (root, factory) {
+    if (true) {
+        // AMD. Register as an anonymous module.
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
+}(this, function () {
+
+    "use strict";
+    //jshint unused:true
+
+    //PDFObject is designed for client-side (browsers), not server-side (node)
+    //Will choke on undefined navigator and window vars when run on server
+    //Return boolean false and exit function when running server-side
+
+    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
+
+    var pdfobjectversion = "2.1.1",
+        ua = window.navigator.userAgent,
+
+        //declare booleans
+        supportsPDFs,
+        isIE,
+        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfActiveX,
+        isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
+        isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
+        isFirefoxWithPDFJS = (function (){
+            //Firefox started shipping PDF.js in Firefox 19.
+            //If this is Firefox 19 or greater, assume PDF.js is available
+            if(!isFirefox){ return false; }
+            //parse userAgent string to get release version ("rv")
+            //ex: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0
+            return (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18);
+        })(),
+        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(ua.toLowerCase())); })(),
+
+        //declare functions
+        createAXO,
+        buildFragmentString,
+        log,
+        embedError,
+        embed,
+        getTargetElement,
+        generatePDFJSiframe,
+        generateEmbedElement;
+
+
+    /* ----------------------------------------------------
+       Supporting functions
+       ---------------------------------------------------- */
+
+    createAXO = function (type){
+        var ax;
+        try {
+            ax = new ActiveXObject(type);
+        } catch (e) {
+            ax = null; //ensure ax remains null
+        }
+        return ax;
+    };
+
+    //IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose
+    //window.ActiveXObject the same way previous versions of IE did
+    //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
+    //so check the first one for older IE, and the second for IE11
+    //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
+    isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
+
+    //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
+    supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
+
+    //Determines whether PDF support is available
+    supportsPDFs = (
+        //as of iOS 12, inline PDF rendering is still not supported in Safari or native webview
+        //3rd-party browsers (eg Chrome, Firefox) use Apple's webview for rendering, and thus the same result as Safari
+        //Therefore if iOS, we shall assume that PDF support is not available
+        !isIOS && (
+            //Modern versions of Firefox come bundled with PDFJS
+            isFirefoxWithPDFJS || 
+            //Browsers that still support the original MIME type check
+            supportsPdfMimeType || (
+                //Pity the poor souls still using IE
+                isIE() && supportsPdfActiveX()
+            )
+        )
+    );
+
+    //Create a fragment identifier for using PDF Open parameters when embedding PDF
+    buildFragmentString = function(pdfParams){
+
+        var string = "",
+            prop;
+
+        if(pdfParams){
+
+            for (prop in pdfParams) {
+                if (pdfParams.hasOwnProperty(prop)) {
+                    string += encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]) + "&";
+                }
+            }
+
+            //The string will be empty if no PDF Params found
+            if(string){
+
+                string = "#" + string;
+
+                //Remove last ampersand
+                string = string.slice(0, string.length - 1);
+
+            }
+
+        }
+
+        return string;
+
+    };
+
+    log = function (msg){
+        if(typeof console !== "undefined" && console.log){
+            console.log("[PDFObject] " + msg);
+        }
+    };
+
+    embedError = function (msg){
+        log(msg);
+        return false;
+    };
+
+    getTargetElement = function (targetSelector){
+
+        //Default to body for full-browser PDF
+        var targetNode = document.body;
+
+        //If a targetSelector is specified, check to see whether
+        //it's passing a selector, jQuery object, or an HTML element
+
+        if(typeof targetSelector === "string"){
+
+            //Is CSS selector
+            targetNode = document.querySelector(targetSelector);
+
+        } else if (typeof jQuery !== "undefined" && targetSelector instanceof jQuery && targetSelector.length) {
+
+            //Is jQuery element. Extract HTML node
+            targetNode = targetSelector.get(0);
+
+        } else if (typeof targetSelector.nodeType !== "undefined" && targetSelector.nodeType === 1){
+
+            //Is HTML element
+            targetNode = targetSelector;
+
+        }
+
+        return targetNode;
+
+    };
+
+    generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
+
+        var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
+        var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
+        var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+        targetNode.className += " pdfobject-container";
+        targetNode.style.position = "relative";
+        targetNode.style.overflow = "auto";
+        targetNode.innerHTML = iframe;
+        return targetNode.getElementsByTagName("iframe")[0];
+
+    };
+
+    generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+
+        var style = "";
+
+        if(targetSelector && targetSelector !== document.body){
+            style = "width: " + width + "; height: " + height + ";";
+        } else {
+            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        }
+
+        targetNode.className += " pdfobject-container";
+        targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+
+        return targetNode.getElementsByTagName("embed")[0];
+
+    };
+
+    embed = function(url, targetSelector, options){
+
+        //Ensure URL is available. If not, exit now.
+        if(typeof url !== "string"){ return embedError("URL is not valid"); }
+
+        //If targetSelector is not defined, convert to boolean
+        targetSelector = (typeof targetSelector !== "undefined") ? targetSelector : false;
+
+        //Ensure options object is not undefined -- enables easier error checking below
+        options = (typeof options !== "undefined") ? options : {};
+
+        //Get passed options, or set reasonable defaults
+        var id = (options.id && typeof options.id === "string") ? "id='" + options.id + "'" : "",
+            page = (options.page) ? options.page : false,
+            pdfOpenParams = (options.pdfOpenParams) ? options.pdfOpenParams : {},
+            fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
+            width = (options.width) ? options.width : "100%",
+            height = (options.height) ? options.height : "100%",
+            assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
+            forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
+            PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
+            targetNode = getTargetElement(targetSelector),
+            fallbackHTML = "",
+            pdfOpenFragment = "",
+            fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+
+        //If target element is specified but is not valid, exit without doing anything
+        if(!targetNode){ return embedError("Target element cannot be determined"); }
+
+
+        //page option overrides pdfOpenParams, if found
+        if(page){
+            pdfOpenParams.page = page;
+        }
+
+        //Stringify optional Adobe params for opening document (as fragment identifier)
+        pdfOpenFragment = buildFragmentString(pdfOpenParams);
+
+        //Do the dance
+
+        //If the forcePDFJS option is invoked, skip everything else and embed as directed
+        if(forcePDFJS && PDFJS_URL){
+
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+
+        //If traditional support is provided, or if this is a modern browser and not iOS (see comment for supportsPDFs declaration)
+        } else if(supportsPDFs || (assumptionMode && isModernBrowser && !isIOS)){
+
+            return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+
+        //If everything else has failed and a PDFJS fallback is provided, try to use it
+        } else if(PDFJS_URL){
+
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+
+        } else {
+
+            //Display the fallback link if available
+            if(fallbackLink){
+
+                fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
+                targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+            }
+
+            return embedError("This browser does not support embedded PDFs");
+
+        }
+
+    };
+
+    return {
+        embed: function (a,b,c){ return embed(a,b,c); },
+        pdfobjectversion: (function () { return pdfobjectversion; })(),
+        supportsPDFs: (function (){ return supportsPDFs; })()
+    };
+
+}));
+
+/***/ }),
+
 /***/ "./node_modules/performance-now/lib/performance-now.js":
 /*!*************************************************************!*\
   !*** ./node_modules/performance-now/lib/performance-now.js ***!
@@ -84849,6 +85140,89 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/react-pdfobject/lib/index.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-pdfobject/lib/index.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var pdfobject = __webpack_require__(/*! pdfobject */ "./node_modules/pdfobject/pdfobject.js");
+var PDFObject = /** @class */ (function (_super) {
+    __extends(PDFObject, _super);
+    function PDFObject() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.embed = function () {
+            var _a = _this.props, url = _a.url, containerId = _a.containerId, containerProps = _a.containerProps, options = __rest(_a, ["url", "containerId", "containerProps"]);
+            if (pdfobject) {
+                pdfobject.embed(url, "#" + containerId, options);
+            }
+        };
+        return _this;
+    }
+    PDFObject.prototype.componentDidMount = function () {
+        this.embed();
+    };
+    PDFObject.prototype.componentDidUpdate = function (prevProps) {
+        // check for different props.url
+        if (prevProps.url !== this.props.url) {
+            this.embed();
+        }
+    };
+    PDFObject.prototype.render = function () {
+        return React.createElement("div", __assign({}, this.props.containerProps, { id: this.props.containerId }));
+    };
+    PDFObject.defaultProps = {
+        width: '100%',
+        height: '100%',
+        containerId: 'pdfobject',
+        forcePDFJS: false,
+        assumptionMode: true,
+    };
+    return PDFObject;
+}(React.PureComponent));
+exports.PDFObject = PDFObject;
+
+
+/***/ }),
+
 /***/ "./node_modules/react-router-dom/esm/react-router-dom.js":
 /*!***************************************************************!*\
   !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
@@ -95463,6 +95837,240 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/ListContract.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/ListContract.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
+/* harmony import */ var react_pdfobject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-pdfobject */ "./node_modules/react-pdfobject/lib/index.js");
+/* harmony import */ var react_pdfobject__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_pdfobject__WEBPACK_IMPORTED_MODULE_4__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var ListContract =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ListContract, _Component);
+
+  function ListContract(props) {
+    var _this;
+
+    _classCallCheck(this, ListContract);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ListContract).call(this, props));
+    _this.state = {
+      contractTitle: '',
+      contractStart: '',
+      contractEnd: '',
+      pdf_file: '',
+      parties: [] // selectedParty: null
+      // this.fileUploadHandler = this.fileUploadHandler.bind(this)
+      // this.onChangeHandler = this.onChangeHandler.bind(this)
+      // this.fileUpload = this.fileUpload.bind(this)
+      // this.handleInputChange = this.handleInputChange.bind(this)
+      // this.onChangeSelect = this.onChangeSelect.bind(this)
+
+    };
+    return _this;
+  }
+  /*
+  =============================================================================
+  */
+
+
+  _createClass(ListContract, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var id = this.props.list ? this.props.list : '';
+      console.log(id);
+
+      if (id) {
+        var url = "http://127.0.0.1:8000/api/contracts/".concat(id);
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url).then(function (response) {
+          _this2.setState({
+            contractTitle: response.data.title,
+            contractStart: moment__WEBPACK_IMPORTED_MODULE_2___default()(response.data.start_at).format('YYYY-MM-DD'),
+            contractEnd: moment__WEBPACK_IMPORTED_MODULE_2___default()(response.data.start_end).format('YYYY-MM-DD'),
+            file: response.data.pdf_file,
+            parties: response.data.parties
+          });
+
+          console.log(response.data);
+        });
+      }
+    }
+    /*
+    =============================================================================
+    */
+    // handleInputChange(event) {
+    //   const target = event.target;
+    //   const value = target.type === 'checkbox' ? target.checked : target.value;
+    //   const name = target.name;
+    //   this.setState({[name]: value});
+    // }
+
+    /*
+    =============================================================================
+    */
+    // onChangeSelect(selectedParty){
+    //   this.setState({ selectedParty });
+    //   console.log(`Option selected:`, selectedParty);
+    // };
+
+    /*
+    =============================================================================
+    */
+    // onChangeHandler(e) {
+    //   let files = e.target.files || e.dataTransfer.files;
+    //   if (!files.length)
+    //   return;
+    //   console.log("files",files)
+    //   this.setState({
+    //     archive: files[0]
+    //   })
+    // }
+
+    /*
+    =============================================================================
+    */
+    // fileUploadHandler(e){
+    //   e.preventDefault() 
+    //   this.fileUpload(this.state.file);
+    // }  
+
+    /*
+    =============================================================================
+    */
+    // fileUpload(file){
+    //   let id = this.props.id ? this.props.id : ''
+    //   const {archive, contractStart, contractEnd, contractTitle, selectedParty} = this.state
+    //   const data = new FormData()
+    //   data.append('file', archive)
+    //   data.append('pdf_file', archive)
+    //   data.append('title', contractTitle)
+    //   data.append('start_at', contractStart)
+    //   data.append('end_at', contractEnd)
+    //   data.append('pivot', JSON.stringify(selectedParty))
+    //   const url = "http://127.0.0.1:8000/api/contracts"
+    //   if(id){
+    //     let url  = `http://127.0.0.1:8000/api/contracts/${id}`
+    //     data.append('_method', 'PUT');
+    //     axios.post(url, data)
+    //     .then(function(response){
+    //       console.log(response)
+    //     })
+    //   }else{
+    //     axios.post(url, data)
+    //     .then(function(response){
+    //       if(response.status == 201){
+    //         // jQuery("input").val('')
+    //         alert("cadastrado com sucesso")
+    //         window.location.href="/contract";
+    //       }else{
+    //         alert("ocorreu um erro ao cadastrar")
+    //       }
+    //     })
+    //   }
+    // }
+
+    /*
+    =============================================================================
+    */
+
+  }, {
+    key: "render",
+    value: function render() {
+      var props = this.props;
+      var _this$state = this.state,
+          contractTitle = _this$state.contractTitle,
+          contractStart = _this$state.contractStart,
+          contractEnd = _this$state.contractEnd,
+          parties = _this$state.parties;
+      var options = parties.map(function (option) {
+        return {
+          value: option.id,
+          label: option.name
+        };
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Visualiza\xE7\xE3o do Contrato"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "list-contract"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, contractTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "data"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "data__start"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Data de In\xEDcio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, contractStart)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "data__end"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, "Data de Encerramento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, contractEnd))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Partes envolvidas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "list-contract__parties"
+      }, parties.map(function (party) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "list-contract__party"
+        }, party.name);
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Contrato"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_pdfobject__WEBPACK_IMPORTED_MODULE_4__["PDFObject"], {
+        height: "700px",
+        url: "http://www.ufjf.br/revistaveredas/files/2009/11/ARTIGO-Maira-Avelar-e-Janaina-Rabelo.pdf"
+      })))));
+    }
+  }]);
+
+  return ListContract;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (ListContract);
+
+/***/ }),
+
+/***/ "./resources/js/components/ListParty.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/ListParty.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/MainC.js":
 /*!******************************************!*\
   !*** ./resources/js/components/MainC.js ***!
@@ -95482,7 +96090,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Contract__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Contract */ "./resources/js/components/Contract.js");
 /* harmony import */ var _Party__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Party */ "./resources/js/components/Party.js");
 /* harmony import */ var _SearchParty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./SearchParty */ "./resources/js/components/SearchParty.js");
-/* harmony import */ var _SearchContract__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./SearchContract */ "./resources/js/components/SearchContract.js");
+/* harmony import */ var _ListParty__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ListParty */ "./resources/js/components/ListParty.js");
+/* harmony import */ var _ListParty__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_ListParty__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _SearchContract__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./SearchContract */ "./resources/js/components/SearchContract.js");
+/* harmony import */ var _ListContract__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ListContract */ "./resources/js/components/ListContract.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -95500,6 +96111,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 
 
@@ -95562,19 +96175,13 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         className: "nav-link",
         to: "/contract"
-      }, "Contratos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        className: "nav-item",
-        role: "presentation"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-        className: "nav-link",
-        to: "/contract/edit/1"
-      }, "editar")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      }, "Cadastrar Contratos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: "nav-item",
         role: "presentation"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         className: "nav-link",
         to: "/party"
-      }, "Partes"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Cadastrar Partes"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
@@ -95591,7 +96198,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         exact: true,
         path: "/search-contract",
-        component: _SearchContract__WEBPACK_IMPORTED_MODULE_7__["default"]
+        component: _SearchContract__WEBPACK_IMPORTED_MODULE_8__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         exact: true,
         path: "/contract/:action",
@@ -95621,41 +96228,24 @@ function (_Component) {
 
 var OperationContract = function OperationContract(_ref) {
   var match = _ref.match;
+  console.log(match);
+  var path = match.params.path;
   var action = match.params.action;
   var id = match.params.id;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, action == "create" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contract__WEBPACK_IMPORTED_MODULE_4__["default"], null) : action == "edit" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contract__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    id: id
-  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contract__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    list: true
-  }));
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, action == "list" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ListContract__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    list: id
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contract__WEBPACK_IMPORTED_MODULE_4__["default"], null));
 };
 
 var OperationParty = function OperationParty(_ref2) {
   var match = _ref2.match;
+  console.log(match);
+  var path = match.params.path;
   var action = match.params.action;
   var id = match.params.id;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, action == "create" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Party__WEBPACK_IMPORTED_MODULE_5__["default"], null) : action == "edit" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Party__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    id: id
-  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Party__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    list: true
-  }));
-};
-
-var Table = function Table(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-    id: "example",
-    className: "table table-striped table-bordered",
-    cellSpacing: "0",
-    width: "100%"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Nome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sobrenome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "CPF"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "E-mail"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Telephone"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Editar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, [{
-    name: "Tiger Nixon",
-    lastname: "teste",
-    cpf: "05387925907",
-    mail: "josielqo@gmail.com",
-    phone: "41 9948-2246"
-  }].map(function (data) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.lastname), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.cpf), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.mail), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.phone), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "X"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "X")));
-  })));
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, action == "party" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ListParty__WEBPACK_IMPORTED_MODULE_7___default.a, {
+    list: id
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Party__WEBPACK_IMPORTED_MODULE_5__["default"], null));
 }; // const Contract = ()=> {
 //   return <h1>Contract</h1>
 // }
@@ -96013,7 +96603,7 @@ function (_Component) {
         _this3.setState({
           searchResult: response.data
         }, function () {
-          return console.log(_this3.state);
+          return console.log(response);
         });
       });
     }
@@ -96077,13 +96667,7 @@ function (_Component2) {
       axios__WEBPACK_IMPORTED_MODULE_3___default.a["delete"](url).then(function (response) {
         console.log(response);
 
-        _this5.props.getData(); //this.removeFromList(e)
-        //if(response.status == 204){
-        // this.setState({
-        //   searchResult: this.state.searchResult.filter(el => el !== e)
-        // })
-        //}
-
+        _this5.props.getData();
       });
     }
   }, {
@@ -96094,14 +96678,16 @@ function (_Component2) {
       console.log(this.props);
       var parties = this.props.data;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-        id: "example",
+        id: "table-result-search",
         className: "table table-striped table-bordered",
         cellSpacing: "0",
         width: "100%"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "T\xEDtulo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de in\xEDcio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de encerramento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Contrato"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "T\xEDtulo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de in\xEDcio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Data de encerramento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Partes envolvidas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Visualizar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Excluir"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, parties.map(function (data) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: data.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.start_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.end_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.start_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.end_at), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, console.log(data)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+          to: "contract/list/".concat(data.id)
+        }, "0")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           onClick: _this6.toDelete.bind(_this6, data.id)
         }, "X"))));
       })));
@@ -96249,7 +96835,7 @@ var Table = function Table(props) {
   console.log(props);
   var parties = props.data;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-    id: "example",
+    id: "table-result-search",
     className: "table table-striped table-bordered",
     cellSpacing: "0",
     width: "100%"

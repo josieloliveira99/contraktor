@@ -38,7 +38,7 @@ class SearchContract extends Component {
     let url  = `http://127.0.0.1:8000/api/search/contract?q=${searchInputValue}`
     axios.get(url)
       .then((response) => {
-        this.setState({searchResult: response.data}, ()=> console.log(this.state));
+        this.setState({searchResult: response.data}, ()=> console.log(response));
       })
   }
 
@@ -81,12 +81,6 @@ class SearchContract extends Component {
         .then((response) => {
           console.log(response);
           this.props.getData()
-          //this.removeFromList(e)
-          //if(response.status == 204){
-            // this.setState({
-            //   searchResult: this.state.searchResult.filter(el => el !== e)
-            // })
-          //}
         })
     }
   
@@ -94,14 +88,15 @@ class SearchContract extends Component {
     console.log(this.props)
     const parties = this.props.data
     return(
-      <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
+      <table id="table-result-search" className="table table-striped table-bordered" cellSpacing="0" width="100%">
           <thead>
               <tr>
                   <th>Título</th>
                   <th>Data de início</th>
                   <th>Data de encerramento</th>
-                  <th>Contrato</th>
+                  <th>Partes envolvidas</th>
                   {/* <th>Editar</th> */}
+                  <th>Visualizar</th>
                   <th>Excluir</th>
               </tr>
           </thead>
@@ -114,7 +109,8 @@ class SearchContract extends Component {
                     <td>{data.title}</td>
                     <td>{data.start_at}</td>
                     <td>{data.end_at}</td>
-                    <td>{data.id}</td>
+                    <td>{console.log(data)}</td>
+                    <td><Link to={`contract/list/${data.id}`}>0</Link></td>
                     {/* <td><Link to={`/contract/edit/${data.id}`}>X</Link></td> */}
                     <td><button onClick={this.toDelete.bind(this,data.id)} >X</button></td>
                   </tr>

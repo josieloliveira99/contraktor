@@ -74,3 +74,49 @@ label{
 .table th, .table td {
     padding: 0.2rem 0.3rem;
 }
+
+.list-contract__parties{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 50%));
+  grid-auto-rows: 70px;
+}
+
+.list-contract__party{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 1px rgba(0,0,0,0.2);
+  margin: 5px;
+}
+
+.data{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows: 70px;
+}
+
+.data__start, .data__end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 1px rgba(0,0,0,0.2);
+  margin: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+}
+
+.list-contract{
+  margin-top: 50px
+}
+
+.data__start > *, .data__end > * {
+  margin: 0 !important;
+}
+
+#table-result-search{
+  margin: 15px
+}

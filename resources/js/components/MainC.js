@@ -5,7 +5,9 @@ import axios from 'axios';
 import Contract from './Contract';
 import Party from './Party';
 import SearchParty from './SearchParty';
+import ListParty from './ListParty';
 import SearchContract from './SearchContract';
+import ListContract from './ListContract';
 
 class MainC extends Component {
 
@@ -30,16 +32,11 @@ class MainC extends Component {
                           </li>
                           <li className="nav-item" role="presentation">
                             <Link className="nav-link" to="/contract">
-                              Contratos
+                              Cadastrar Contratos
                             </Link>
                           </li>
                           <li className="nav-item" role="presentation">
-                            <Link className="nav-link" to="/contract/edit/1">
-                              editar
-                            </Link>
-                          </li>
-                          <li className="nav-item" role="presentation">
-                            <Link className="nav-link" to="/party">Partes</Link>
+                            <Link className="nav-link" to="/party">Cadastrar Partes</Link>
                           </li>
                         </ul>
                     </div>
@@ -50,8 +47,6 @@ class MainC extends Component {
           <div className="row">
             <div className="col-md-12">
               <main>
-                
-                
                 <Route exact path="/contract" component={OperationContract}/>
                 <Route exact path="/search-party" component={SearchParty}/>
                 <Route exact path="/search-contract" component={SearchContract}/>
@@ -70,64 +65,28 @@ class MainC extends Component {
 }
 
 const OperationContract = ({match}) => {
+  console.log(match)
+  const path = match.params.path
   const action = match.params.action
   const id     = match.params.id
   return(
     <div>
-      {action == "create" ? <Contract/> : action == "edit" ? <Contract id={id}/> : <Contract list/>}
+      {action == "list" ? <ListContract list={id}/> : <Contract/>}
     </div>
   )
 }
 
 const OperationParty = ({match}) => {
+  console.log(match)
+  const path = match.params.path
   const action = match.params.action
   const id     = match.params.id
   return(
     <div>
-      {action == "create" ? <Party/> : action == "edit" ? <Party id={id}/> : <Party list/>}
+      {action == "party" ? <ListParty list={id}/> : <Party/>}
     </div>
   )
 }
-
-const Table = (props)=>{
-  return(
-    <table id="example" className="table table-striped table-bordered" cellSpacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th>CPF</th>
-                <th>E-mail</th>
-                <th>Telephone</th>
-                <th>Editar</th>
-                <th>Excluir</th>
-            </tr>
-        </thead>
-        <tbody>
-          {
-            [{name: "Tiger Nixon", lastname: "teste", cpf: "05387925907", mail:"josielqo@gmail.com", phone: "41 9948-2246"}].map((data)=>{
-              return(
-                <React.Fragment>
-                <tr>
-                  <td>{data.name}</td>
-                  <td>{data.lastname}</td>
-                  <td>{data.cpf}</td>
-                  <td>{data.mail}</td>
-                  <td>{data.phone}</td>
-                  <td>X</td>
-                  <td>X</td>
-                </tr>
-                </React.Fragment>
-              )
-            })
-          }
-        </tbody>
-    </table>
-  )
-}
-
-
-
 
 // const Contract = ()=> {
 //   return <h1>Contract</h1>
