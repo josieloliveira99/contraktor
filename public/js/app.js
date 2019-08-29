@@ -96306,7 +96306,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./info */ "./resources/js/components/info.js");
+/* harmony import */ var _Info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Info */ "./resources/js/components/Info.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -96490,9 +96490,7 @@ function (_Component) {
         className: "hero"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "hero__title"
-      }, "Cadastrar uma ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "parte"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_info__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        text: "A pesquisa deve ser efetuada pelo nome exato da parte."
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, "Cadastrar uma ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "parte"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         method: "post"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group files"
@@ -96533,7 +96531,7 @@ function (_Component) {
         type: "button",
         className: "btn btn-info",
         onClick: this.handleSubmit
-      }, "Submit")))))));
+      }, "Cadastrar")))))));
     }
   }]);
 
@@ -96895,31 +96893,6 @@ var Table = function Table(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/info.js":
-/*!*****************************************!*\
-  !*** ./resources/js/components/info.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var Info = function Info(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "info"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "info__text"
-  }, props.text));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Info);
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -96938,8 +96911,8 @@ var Info = function Info(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/josieloliveira/Desktop/contraktor/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/josieloliveira/Desktop/contraktor/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/josieloliveira/Documents/contraktor/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/josieloliveira/Documents/contraktor/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

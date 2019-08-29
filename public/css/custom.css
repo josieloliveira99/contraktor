@@ -13,6 +13,7 @@ body{
 }
 
 .hero__title strong{
+  color: #3490dc;
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -60,7 +61,8 @@ input[type=file].form-control{
 }
 
 .pull-right button{
-  background-color: #000;
+  background-color: #2b89c5;
+  /* background-color: #000; */
   border-color: transparent;
   color: #fff;
 }
@@ -106,10 +108,10 @@ label{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
-  box-shadow: 0 0 1px 1px rgba(0,0,0,0.2);
+  /* box-shadow: 0 0 1px 1px rgba(0,0,0,0.2); */
   margin: 5px;
-  background-color: rgba(0, 0, 0, 0.9);
+  /* background-color: rgba(0, 0, 0, 0.9); */
+  background-color: #3AA9F0;
   color: #fff;
 }
 
@@ -136,4 +138,27 @@ label{
 
 .info__text{
   margin: 0;
+}
+
+.navigation-clean{
+  background-color: #1fa9f0
+}
+
+.navigation-clean.navbar-light .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navigation-clean.navbar-light .navbar-nav .nav-link:hover {
+  color: #f4f4f4 !important;
+}
+
+.navbar-light .navbar-brand {
+  font-family: Dosis;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.navbar-light .navbar-brand:hover {
+  color: #f4f4f4;
 }
