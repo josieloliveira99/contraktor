@@ -95830,7 +95830,7 @@ function (_Component) {
         type: "button",
         className: "btn btn-info",
         onClick: this.fileUploadHandler
-      }, "Salvar"))))));
+      }, "Cadastrar"))))));
     }
   }]);
 

@@ -182,7 +182,7 @@ class Contract extends Component {
                     <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
                   </div> 
                   <div className = "col-md-12 pull-right">
-                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Salvar</button>
+                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Cadastrar</button>
                   </div> 
                 </form>
         </div>
