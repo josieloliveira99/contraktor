@@ -74,12 +74,14 @@ input[type=file].form-control{
   /* background-color: #000; */
   border-color: transparent;
   color: #fff;
+  width: 200px;
+  border-radius: 100px;
 }
 
 .pull-right button:hover{
-  background-color: #f4f4f4;
-  color: #000;
-  border-color: #000
+  background-color: #1e6592;
+  color: #fff;
+  border-color: #1e6592
 }
 
 label{
