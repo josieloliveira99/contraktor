@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Info from './info';
+import Search from './Search';
  
 class Party extends Component {
 
@@ -100,13 +100,7 @@ class Party extends Component {
       }else{
         axios.post(url, data)
         .then(function(response){
-          if(response.status == 201){
-            jQuery("input").val('')
-            alert("cadastrado com sucesso")
-            //window.location.href="/contract";
-          }else{
-            alert("ocorreu um erro ao cadastrar")
-          }
+          console.log(response)
         })
 
       }
@@ -125,11 +119,42 @@ class Party extends Component {
         <div className="container">
       <div className="row">
         <div className="col-md-12">
-          <div className="hero">
-            <h1 className="hero__title">Cadastrar uma <strong>parte</strong></h1>
-          </div>
-            <Info text="A pesquisa deve ser efetuada pelo nome exato da parte."/>
-             <form method="post">
+        <h1>Party</h1>
+        <form className="form-inline">
+            <div className="form-group files col-md-12">
+              <input type="text" placeholder="Digite sua busca ..." name="search" className="form-control col-md-10" list="parties" onChange = {this.handleSearchChange} />
+              <datalist id="parties">
+                {optionsParties}
+              </datalist>
+              <button type="submit" className="btn btn-primary my-1 col-md-2" onClick={this.handleSubmitSearch}>Pesquisar</button>
+            </div>
+          </form>
+            {search &&
+              <table style={{width: "100%"}}> 
+                <thead>
+                  <tr>
+                    <td>Parte</td>
+                    <td>action</td>
+                    <td>action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                {search &&
+                search.map((party)=> {
+                  return(
+                    <tr>
+                    <td>{party.name}</td>
+                    <td>excluir</td>
+                    <td>ver</td>
+                    </tr>
+                  )
+                })
+              }
+                </tbody>
+              </table>
+            }
+            {!list &&
+            <form method="post">
                   <div className="form-group files">
                     <label>CPF</label>
                     <input type="text" name="cpf" className="form-control" value={cpf} onChange={this.handleInputChange}/>
@@ -146,10 +171,11 @@ class Party extends Component {
                     <label>Telefone</label>
                     <input type="text" name="phone" className="form-control" value={phone} onChange={this.handleInputChange}/>
                   </div>
-                  <div className="col-md-12 pull-right">
+                  <div className="col-md-6 pull-right">
                   <button width="100%" type="button" className="btn btn-info" onClick={this.handleSubmit}>Submit</button>
                   </div>
               </form>
+            }
         </div>
       </div>
     </div>

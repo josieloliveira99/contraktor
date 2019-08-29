@@ -95778,11 +95778,7 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "hero"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        className: "hero__title"
-      }, "Cadastrar ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "contrato"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Contratos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         method: "post"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group files"
@@ -95824,7 +95820,7 @@ function (_Component) {
         className: "form-control",
         onChange: this.onChangeHandler
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 pull-right"
+        className: "col-md-6 pull-right"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         width: "100%",
         type: "button",
@@ -95838,31 +95834,6 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Contract);
-
-/***/ }),
-
-/***/ "./resources/js/components/Info.js":
-/*!*****************************************!*\
-  !*** ./resources/js/components/Info.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var Info = function Info(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "info"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "info__text"
-  }, props.text));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Info);
 
 /***/ }),
 
@@ -96306,7 +96277,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./info */ "./resources/js/components/info.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -96329,8 +96299,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-
+ // import Search from './Search';
 
 var Party =
 /*#__PURE__*/
@@ -96486,13 +96455,7 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "hero"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        className: "hero__title"
-      }, "Cadastrar uma ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "parte"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_info__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        text: "A pesquisa deve ser efetuada pelo nome exato da parte."
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Party"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         method: "post"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group files"
@@ -96527,7 +96490,7 @@ function (_Component) {
         value: phone,
         onChange: this.handleInputChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 pull-right"
+        className: "col-md-6 pull-right"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         width: "100%",
         type: "button",
@@ -96560,7 +96523,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _Info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Info */ "./resources/js/components/Info.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -96578,7 +96540,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 
 
 
@@ -96659,7 +96620,7 @@ function (_Component) {
         className: "hero"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "hero__title"
-      }, "Pesquise os ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "contratos"), " cadastrados")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Pesquise os contratos cadastrados")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "searchform--one",
         className: "form-group has-search"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
@@ -96672,9 +96633,7 @@ function (_Component) {
         className: "form-control",
         placeholder: "Digite aqui sua pesquisa",
         onChange: this.handleSearchChange
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Info__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        text: "A pesquisa deve ser efetuada pelo t\xEDtulo exato do contrato."
-      }), this.state.searchResult.length != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
+      }))), this.state.searchResult.length != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
         getData: this.getData,
         data: this.state.searchResult
       })));
@@ -96758,7 +96717,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _Info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Info */ "./resources/js/components/Info.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -96776,7 +96734,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 
 
 
@@ -96852,7 +96809,7 @@ function (_Component) {
         className: "hero"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "hero__title"
-      }, "Pesquise as ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "partes"), " cadastradas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Pesquise as partes cadastradas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "searchform--one",
         className: "form-group has-search"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
@@ -96865,9 +96822,7 @@ function (_Component) {
         className: "form-control",
         placeholder: "Digite aqui sua pesquisa",
         onChange: this.handleSearchChange
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Info__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        text: "A pesquisa deve ser efetuada pelo nome exato da parte."
-      }), this.state.searchResult.length != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
+      }))), this.state.searchResult.length != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
         data: this.state.searchResult
       })));
     }
@@ -96895,31 +96850,6 @@ var Table = function Table(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/info.js":
-/*!*****************************************!*\
-  !*** ./resources/js/components/info.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var Info = function Info(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "info"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "info__text"
-  }, props.text));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Info);
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -96938,8 +96868,8 @@ var Info = function Info(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/josieloliveira/Desktop/contraktor/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/josieloliveira/Desktop/contraktor/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/josieloliveira/Documents/contraktor/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/josieloliveira/Documents/contraktor/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

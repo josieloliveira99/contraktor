@@ -28,7 +28,6 @@ class Contract extends Component {
     
     componentDidMount(){
       let id = this.props.id ? this.props.id : ''
-      console.log(id)
       if(this.props.id){
         let url = `http://127.0.0.1:8000/api/contracts/${id}`
         axios.get(url)
@@ -41,8 +40,6 @@ class Contract extends Component {
           })
         });
       }  
-
-      console.log(this.state)
 
       let urlParties = `http://127.0.0.1:8000/api/parties`
       axios.get(urlParties)
@@ -123,13 +120,7 @@ class Contract extends Component {
       }else{
         axios.post(url, data)
         .then(function(response){
-          if(response.status == 201){
-            // jQuery("input").val('')
-            alert("cadastrado com sucesso")
-            window.location.href="/contract";
-          }else{
-            alert("ocorreu um erro ao cadastrar")
-          }
+          console.log(response)
         })
       }
     }
@@ -149,9 +140,7 @@ class Contract extends Component {
         <div className="container">
       <div className="row">
         <div className="col-md-12">
-        <div className="hero">
-          <h1 className="hero__title">Cadastrar <strong>contrato</strong></h1>
-        </div>
+        <h1>Contratos</h1>
         <form method = "post">
                   <div className = "form-group files">
                     <label> Título </label> 
@@ -178,11 +167,11 @@ class Contract extends Component {
                     <input type = "date" name = "contractEnd" className = "form-control" value={contractEnd} onChange = {this.handleInputChange}/> 
                   </div> 
                   <div className = "form-group files">
-                    <label>Selecione o contrato</label> 
+                    <label> Upload Your File </label> 
                     <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
                   </div> 
-                  <div className = "col-md-12 pull-right">
-                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Salvar</button>
+                  <div className = "col-md-6 pull-right">
+                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Upload File</button>
                   </div> 
                 </form>
         </div>

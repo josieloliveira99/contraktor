@@ -7,14 +7,10 @@ body{
 }
 
 .hero__title{
-  font-family: 'Dosis', sans-serif;
   font-size: 1.8em;
-  margin: 1% 0; 
-}
-
-.hero__title strong{
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: bold;
+  margin: 2% 0; 
 }
 
 #searchform--one{
@@ -123,17 +119,4 @@ label{
 
 #table-result-search{
   margin: 15px
-}
-
-.info{
-  display: flex;
-  width: 100%;
-  margin: 0 15px;
-  padding: 10px;
-  border: 1px solid #f4f4f4;
-  border-radius: 5px;
-}
-
-.info__text{
-  margin: 0;
 }

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Info from './info';
+// import Search from './Search';
  
 class Party extends Component {
 
@@ -125,10 +125,7 @@ class Party extends Component {
         <div className="container">
       <div className="row">
         <div className="col-md-12">
-          <div className="hero">
-            <h1 className="hero__title">Cadastrar uma <strong>parte</strong></h1>
-          </div>
-            <Info text="A pesquisa deve ser efetuada pelo nome exato da parte."/>
+        <h1>Party</h1>
              <form method="post">
                   <div className="form-group files">
                     <label>CPF</label>
@@ -146,7 +143,7 @@ class Party extends Component {
                     <label>Telefone</label>
                     <input type="text" name="phone" className="form-control" value={phone} onChange={this.handleInputChange}/>
                   </div>
-                  <div className="col-md-12 pull-right">
+                  <div className="col-md-6 pull-right">
                   <button width="100%" type="button" className="btn btn-info" onClick={this.handleSubmit}>Submit</button>
                   </div>
               </form>

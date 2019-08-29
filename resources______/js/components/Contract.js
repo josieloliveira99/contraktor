@@ -149,9 +149,7 @@ class Contract extends Component {
         <div className="container">
       <div className="row">
         <div className="col-md-12">
-        <div className="hero">
-          <h1 className="hero__title">Cadastrar <strong>contrato</strong></h1>
-        </div>
+        <h1>Contratos</h1>
         <form method = "post">
                   <div className = "form-group files">
                     <label> Título </label> 
@@ -181,7 +179,7 @@ class Contract extends Component {
                     <label>Selecione o contrato</label> 
                     <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
                   </div> 
-                  <div className = "col-md-12 pull-right">
+                  <div className = "col-md-6 pull-right">
                     <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Salvar</button>
                   </div> 
                 </form>

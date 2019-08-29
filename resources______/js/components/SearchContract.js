@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import Info from './Info';
 
 class SearchContract extends Component {
   constructor(props) {
@@ -49,7 +48,7 @@ class SearchContract extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="hero">
-                <h1 className="hero__title">Pesquise os <strong>contratos</strong> cadastrados</h1>
+                <h1 className="hero__title">Pesquise os contratos cadastrados</h1>
               </div>
               <div id="searchform--one" className="form-group has-search">
                 <span className="fa fa-search form-control-feedback"></span>
@@ -59,7 +58,6 @@ class SearchContract extends Component {
                 <input type="search" className="form-control" placeholder="Digite aqui sua pesquisa" onChange ={this.handleSearchChange}/>
               </div>      
             </div>
-            <Info text="A pesquisa deve ser efetuada pelo título exato do contrato."/>
             {
               (this.state.searchResult).length != 0 && <Table getData={this.getData} data={this.state.searchResult}/>
             }

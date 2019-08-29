@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import Info from './Info';
 
 class SearchParty extends Component {
   constructor(props) {
@@ -44,7 +43,7 @@ class SearchParty extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="hero">
-                <h1 className="hero__title">Pesquise as <strong>partes</strong> cadastradas</h1>
+                <h1 className="hero__title">Pesquise as partes cadastradas</h1>
               </div>
               <div id="searchform--one" className="form-group has-search">
                 <span className="fa fa-search form-control-feedback"></span>
@@ -52,9 +51,8 @@ class SearchParty extends Component {
                   fake
                 </button>
                 <input type="search" className="form-control" placeholder="Digite aqui sua pesquisa" onChange ={this.handleSearchChange}/>
-              </div>
+              </div>      
             </div>
-            <Info text="A pesquisa deve ser efetuada pelo nome exato da parte."/>
             {
               (this.state.searchResult).length != 0 && <Table data={this.state.searchResult}/>
             }
