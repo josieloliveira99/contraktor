@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "moment": "^2.24.0",
+        "react-datepicker": "^2.9.3",
         "react-pdfobject": "^1.1.1",
         "react-router-dom": "^5.0.1",
         "react-select": "^3.0.4"

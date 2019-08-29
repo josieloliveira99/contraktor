@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
+import Calendar from './Calendar';
 
 class Contract extends Component {
 
@@ -20,6 +21,8 @@ class Contract extends Component {
       this.fileUpload = this.fileUpload.bind(this)
       this.handleInputChange = this.handleInputChange.bind(this)
       this.onChangeSelect = this.onChangeSelect.bind(this)
+      this.getStartDateCalendar = this.getStartDateCalendar.bind(this)
+      this.getEndDateCalendar = this.getEndDateCalendar.bind(this)
     }
     
     /*
@@ -137,6 +140,22 @@ class Contract extends Component {
     /*
     =============================================================================
     */
+
+    getStartDateCalendar(e){
+      console.log(e)
+    }
+
+    /*
+    =============================================================================
+    */
+
+    getEndDateCalendar(e){
+      console.log(e)
+    }
+
+    /*
+    =============================================================================
+    */
     
     render() {
       const props = this.props
@@ -171,11 +190,13 @@ class Contract extends Component {
                   </div> 
                   <div className = "form-group files">
                     <label> Começa em </label> 
-                    <input type = "date" name = "contractStart" className = "form-control" value={contractStart} onChange = {this.handleInputChange}/>
+                    {/* <input type = "date" name = "contractStart" className = "form-control" value={contractStart} onChange = {this.handleInputChange}/> */}
+                    <Calendar getDate={this.getStartDateCalendar}/>
                   </div> 
                   <div className = "form-group files">
                     <label> Termina em </label> 
-                    <input type = "date" name = "contractEnd" className = "form-control" value={contractEnd} onChange = {this.handleInputChange}/> 
+                    {/* <input type = "date" name = "contractEnd" className = "form-control" value={contractEnd} onChange = {this.handleInputChange}/>  */}
+                    <Calendar getDate={this.getEndDateCalendar}/>
                   </div> 
                   <div className = "form-group files">
                     <label>Selecione o contrato</label> 
