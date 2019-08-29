@@ -95841,6 +95841,39 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/IconSearch.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/IconSearch.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var IconSearch = function IconSearch(_ref) {
+  var id = _ref.id,
+      className = _ref.className;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+    id: id,
+    className: className,
+    x: "0px",
+    y: "0px",
+    width: "20px",
+    height: "20px",
+    viewBox: "0 0 410.23 410.23"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("g", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
+    d: "M401.625,364.092l-107.1-107.1c19.125-26.775,30.6-59.288,30.6-93.713c0-89.888-72.675-162.562-162.562-162.562 S0,73.392,0,163.279s72.675,162.562,162.562,162.562c34.425,0,66.938-11.475,93.713-30.6l107.1,107.1 c9.562,9.562,26.775,9.562,38.25,0l0,0C413.1,390.867,413.1,375.566,401.625,364.092z M162.562,287.592 c-68.85,0-124.312-55.463-124.312-124.312c0-68.85,55.462-124.312,124.312-124.312c68.85,0,124.312,55.462,124.312,124.312 C286.875,232.129,231.412,287.592,162.562,287.592z"
+  })));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (IconSearch);
+
+/***/ }),
+
 /***/ "./resources/js/components/Info.js":
 /*!*****************************************!*\
   !*** ./resources/js/components/Info.js ***!
@@ -96559,6 +96592,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Info */ "./resources/js/components/Info.js");
+/* harmony import */ var _IconSearch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./IconSearch */ "./resources/js/components/IconSearch.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -96576,6 +96610,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -96665,7 +96700,9 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: this.handleSubmitSearch,
         className: "searchform-one__hidden-button"
-      }, "fake"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_IconSearch__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        id: "search-contract__icon--search"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "search",
         className: "form-control",
         placeholder: "Digite aqui sua pesquisa",

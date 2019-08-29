@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import Info from './Info';
+import IconSearch from './IconSearch';
 
 class SearchContract extends Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class SearchContract extends Component {
               <div id="searchform--one" className="form-group has-search">
                 <span className="fa fa-search form-control-feedback"></span>
                 <button onClick={this.handleSubmitSearch} className="searchform-one__hidden-button">
-                  fake
+                  <IconSearch id="search-contract__icon--search"/>
                 </button>
                 <input type="search" className="form-control" placeholder="Digite aqui sua pesquisa" onChange ={this.handleSearchChange}/>
               </div>      
