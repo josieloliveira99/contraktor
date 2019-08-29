@@ -21,13 +21,11 @@ class MainC extends Component {
                         id="navcol-1">
                         <ul className="nav navbar-nav ml-auto">
                           <li className="nav-item" role="presentation">
-                            <Link className="nav-link" to="/search-party">
-                              Search Party
-                            </Link>
+                            <Link className="nav-link" to="/party">Cadastrar Partes</Link>
                           </li>
                           <li className="nav-item" role="presentation">
-                            <Link className="nav-link" to="/search-contract">
-                              Search Contract
+                            <Link className="nav-link" to="/search-party">
+                              Pesquisar Partes
                             </Link>
                           </li>
                           <li className="nav-item" role="presentation">
@@ -36,7 +34,9 @@ class MainC extends Component {
                             </Link>
                           </li>
                           <li className="nav-item" role="presentation">
-                            <Link className="nav-link" to="/party">Cadastrar Partes</Link>
+                            <Link className="nav-link" to="/search-contract">
+                              Pesquisar Contratos
+                            </Link>
                           </li>
                         </ul>
                     </div>

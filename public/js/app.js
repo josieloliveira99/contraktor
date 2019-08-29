@@ -96191,14 +96191,14 @@ function (_Component) {
         role: "presentation"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         className: "nav-link",
-        to: "/search-party"
-      }, "Search Party")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        to: "/party"
+      }, "Cadastrar Partes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: "nav-item",
         role: "presentation"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         className: "nav-link",
-        to: "/search-contract"
-      }, "Search Contract")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        to: "/search-party"
+      }, "Pesquisar Partes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: "nav-item",
         role: "presentation"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
@@ -96209,8 +96209,8 @@ function (_Component) {
         role: "presentation"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         className: "nav-link",
-        to: "/party"
-      }, "Cadastrar Partes"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        to: "/search-contract"
+      }, "Pesquisar Contratos"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
