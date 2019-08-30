@@ -105,16 +105,16 @@ label{
     padding: 0.2rem 0.3rem;
 }
 
-.list-contract__parties{
+/* .list-contract__parties{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20%, 50%));
   grid-auto-rows: 70px;
-}
+} */
 
 .list-contract__party{
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 1px 1px rgba(0,0,0,0.2);
@@ -211,5 +211,13 @@ button:focus {
 
 .form-group.files label{
   color: #155c98
+}
+
+.modal{
+  padding: 20px
+}
+
+.modal-dialog {
+  max-width: 80% !important
 }
 

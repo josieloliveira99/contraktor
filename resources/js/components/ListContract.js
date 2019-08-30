@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
-import { PDFObject } from 'react-pdfobject'
+import { PDFObject } from 'react-pdfobject';
+import Modal from './Modal';
+import IconUser from './IconUser';
 
 
 class ListContract extends Component {
@@ -136,7 +138,7 @@ class ListContract extends Component {
     
     render() {
       const props = this.props
-      const {contractTitle, contractStart, contractEnd, parties} = this.state
+      const {pdf_file, contractTitle, contractStart, contractEnd, parties} = this.state
       const options = parties.map(function(option){
         return {value: option.id, label: option.name}
       })
@@ -145,9 +147,23 @@ class ListContract extends Component {
     <div className="container">
       <div className="row">
         <div className="col-md-12">
-          <h1>Visualização do Contrato</h1>
-          <div className="list-contract">
+          <h1>{contractTitle}</h1>
+          <h5>Partes Envolvidas</h5>
+          <div className="list-contract__party">
+          {
+            parties.map((party)=>{
+              return <div className=""><IconUser/>&nbsp;&nbsp;{party.name}</div>
+            })
+          }
+          </div>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
+            Abrir modal de demonstração
+          </button>
+          {/* <div className="list-contract">
             <h3>{contractTitle}</h3>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
+              Abrir modal de demonstração
+            </button>
             <div className="data">
               <div className="data__start">
                 <h5>Data de Início</h5>
@@ -169,10 +185,10 @@ class ListContract extends Component {
             </div>
             <h3>Contrato</h3>
             <br/>
-            <PDFObject height="700px" url="http://www.ufjf.br/revistaveredas/files/2009/11/ARTIGO-Maira-Avelar-e-Janaina-Rabelo.pdf" />
-          </div> 
+          </div>  */}
         </div>
       </div>
+      <Modal documentTitle={contractTitle}><PDFObject height="700px" url={`http://127.0.0.1:8000/${pdf_file}`} /></Modal>
     </div>
     );
   }
