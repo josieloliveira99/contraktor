@@ -29,12 +29,14 @@ class SearchParty extends Component {
 
   handleSubmitSearch(e){
     e.preventDefault()
-    console.log("submeteu")
+    this.props.toogleLoading()
+    //console.log("submeteu")
     const {searchInputValue} = this.state 
-    console.log(searchInputValue)
+    //console.log(searchInputValue)
     let url  = `http://127.0.0.1:8000/api/search/party?q=${searchInputValue}`
     axios.get(url)
       .then((response) => {
+        this.props.toogleLoading()
         this.setState({searchResult: response.data}, ()=> console.log(this.state));
       })
   }
@@ -66,7 +68,7 @@ class SearchParty extends Component {
 }
 
 const Table = (props)=>{
-  console.log(props)
+  //console.log(props)
   const parties = props.data
   return(
     <table id="table-result-search" className="table table-striped table-bordered" cellSpacing="0" width="100%">

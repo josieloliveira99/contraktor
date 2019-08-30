@@ -31,26 +31,27 @@ class Contract extends Component {
     */
     
     componentDidMount(){
-      let id = this.props.id ? this.props.id : ''
-      console.log(id)
-      if(this.props.id){
-        let url = `http://127.0.0.1:8000/api/contracts/${id}`
-        axios.get(url)
-        .then((response) => {
-          this.setState({
-            contractTitle: response.data.title,
-            contractStart: moment(response.data.start_at).format('YYYY-MM-DD'),
-            contractEnd: moment(response.data.start_end).format('YYYY-MM-DD'),
-            file: response.data.pdf_file
-          })
-        });
-      }  
+      // let id = this.props.id ? this.props.id : ''
+      // //console.log(id)
+      // if(this.props.id){
+      //   let url = `http://127.0.0.1:8000/api/contracts/${id}`
+      //   axios.get(url)
+      //   .then((response) => {
+      //     this.setState({
+      //       contractTitle: response.data.title,
+      //       contractStart: moment(response.data.start_at).format('YYYY-MM-DD'),
+      //       contractEnd: moment(response.data.start_end).format('YYYY-MM-DD'),
+      //       file: response.data.pdf_file
+      //     })
+      //   });
+      // }  
 
       // console.log(this.state)
-
+      this.props.toogleLoading()
       let urlParties = `http://127.0.0.1:8000/api/parties`
       axios.get(urlParties)
       .then((response) => {
+        this.props.toogleLoading()
         this.setState({
           parties: response.data
         })
@@ -61,10 +62,10 @@ class Contract extends Component {
     =============================================================================
     */
 
-    componentWillUpdate(nextProps, nextState){
-      console.log("nextProps",nextProps)
-      console.log("nextState",nextState)
-    }
+    // componentWillUpdate(nextProps, nextState){
+    //   console.log("nextProps",nextProps)
+    //   console.log("nextState",nextState)
+    // }
 
     /*
     =============================================================================
@@ -114,8 +115,8 @@ class Contract extends Component {
     */
 
     fileUpload(file){
-      
-      let id = this.props.id ? this.props.id : ''
+      this.props.toogleLoading()
+      // let id = this.props.id ? this.props.id : ''
       const {archive, contractStart, contractEnd, contractTitle, selectedParty} = this.state
       const data = new FormData()
       data.append('file', archive)
@@ -126,25 +127,27 @@ class Contract extends Component {
       data.append('pivot', JSON.stringify(selectedParty))
       const url = "http://127.0.0.1:8000/api/contracts"
 
-      if(id){
-        let url  = `http://127.0.0.1:8000/api/contracts/${id}`
-        data.append('_method', 'PUT');
+      // if(id){
+      //   let url  = `http://127.0.0.1:8000/api/contracts/${id}`
+      //   data.append('_method', 'PUT');
+      //   axios.post(url, data)
+      //   .then(function(response){
+      //     console.log(response)
+      //   })
+      // }else{
         axios.post(url, data)
-        .then(function(response){
-          console.log(response)
-        })
-      }else{
-        axios.post(url, data)
-        .then(function(response){
+        .then((response) => {
           if(response.status == 201){
+            this.props.toogleLoading()
             // jQuery("input").val('')
             alert("cadastrado com sucesso")
             window.location.href="/contract";
           }else{
+            this.props.toogleLoading()
             alert("ocorreu um erro ao cadastrar")
           }
         })
-      }
+      // }
     }
 
     /*

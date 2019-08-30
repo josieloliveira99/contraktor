@@ -62,13 +62,20 @@ class MainC extends Component {
           <div className="row">
             <div className="col-md-12">
               <main>
-                <Route exact path="/contract" component={OperationContract}/>
-                <Route exact path="/search-party" component={SearchParty}/>
+                <Route exact path="/contract" render={(props) => <Contract {...props} toogleLoading={this.setLoading} />}/>
+                
+                <Route exact path="/search-party" render={(props) => <SearchParty {...props} toogleLoading={this.setLoading} />}/>
+                
                 <Route exact path="/search-contract" render={(props) => <SearchContract {...props} toogleLoading={this.setLoading} />}/>
+                
                 <Route exact path="/contract/:action" component={OperationContract}/>
+                
                 <Route exact path="/contract/:action/:id" component={OperationContract}/>
-                <Route exact path="/party" component={OperationParty}/>
+                
+                <Route exact path="/party" render={(props) => <Party {...props} toogleLoading={this.setLoading} />}/>
+                
                 <Route exact path="/party/:action" component={OperationParty}/>
+                
                 <Route exact path="/party/:action/:id" component={OperationParty}/>
               </main>
             </div>
@@ -98,7 +105,7 @@ const OperationParty = ({match}) => {
   const id     = match.params.id
   return(
     <div>
-      {action == "party" ? <ListParty list={id}/> : <Party/>}
+      {action == "list" ? <ListParty list={id}/> : <Party/>}
     </div>
   )
 }

@@ -80,36 +80,39 @@ class Party extends Component {
       
     handleSubmit(e){
       e.preventDefault() 
+      this.props.toogleLoading()
       let id = this.props.id ? this.props.id : ""
       let url  = "http://127.0.0.1:8000/api/parties"
       const {cpf, name, mail, phone} = this.state
-      console.log("state",this.state)
+      // console.log("state",this.state)
       let data = {}
       data.cpf     = cpf 
       data.name   = name
       data.mail   = mail
       data.phone   = phone
 
-      if(id){
-        let url  = `http://127.0.0.1:8000/api/parties/${id}`
-        axios.put(url, data)
-        .then(function(response){
-          console.log(response)
-        })
+      // if(id){
+      //   let url  = `http://127.0.0.1:8000/api/parties/${id}`
+      //   axios.put(url, data)
+      //   .then(function(response){
+      //     console.log(response)
+      //   })
 
-      }else{
+      // }else{
         axios.post(url, data)
-        .then(function(response){
+        .then((response) => {
           if(response.status == 201){
+            this.props.toogleLoading()
             jQuery("input").val('')
             alert("cadastrado com sucesso")
             //window.location.href="/contract";
           }else{
+            this.props.toogleLoading()
             alert("ocorreu um erro ao cadastrar")
           }
         })
 
-      }
+      // }
 
     }
       
