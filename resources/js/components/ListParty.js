@@ -4,6 +4,7 @@ import axios from 'axios';
 import { PDFObject } from 'react-pdfobject';
 import FileViewer from 'react-file-viewer';
 import Modal from './Modal';
+import IconView from './IconView';
 
 class ListParty extends Component {
 
@@ -150,7 +151,7 @@ class ListParty extends Component {
       // // let extension = fileName.match(regex); 
       // const extension = fileName.split('.')[1]
       //console.log(fileName.split('.').slice(0, -1))
-      const {name, cpf, mail, phone, contracts} = this.state.party
+      const {name, lastname, cpf, mail, phone, contracts} = this.state.party
       //console.log("1",this.state.party.contracts)
       //console.log("2",contracts)
       return (
@@ -158,7 +159,7 @@ class ListParty extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="hero">
-            <h1 className="hero__title upper">{name}</h1>
+            <h1 className="hero__title upper">{`${name} ${lastname}`}</h1>
           </div>
           <div className="listed-party">
             <div className="listed-party__label">
@@ -190,9 +191,9 @@ class ListParty extends Component {
               return(
                 <Fragment>
                   <div className="">
-                    <button data-toggle="modal" data-target={`#contractModal${contract.id}`}>
-                      {contract.title}
-                    </button>
+                    <p className="listener-modal-contract" data-toggle="modal" data-target={`#contractModal${contract.id}`}>
+                      <IconView color="#000"/>&nbsp;&nbsp;{contract.title}
+                    </p>
                   </div>
                   <Modal id={contract.id} documentTitle={contract.title}>
                     {

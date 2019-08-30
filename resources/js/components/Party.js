@@ -10,6 +10,7 @@ class Party extends Component {
         this.state ={
           cpf: '',
           name: '',
+          lastname: '',
           mail: '',
           phone: '', 
           parties: [],
@@ -31,6 +32,7 @@ class Party extends Component {
             this.setState({
               cpf: response.data.cpf,
               name: response.data.name,
+              lastname: response.data.lastname,
               mail: response.data.mail,
               phone: response.data.phone
             })
@@ -83,13 +85,14 @@ class Party extends Component {
       this.props.toogleLoading()
       let id = this.props.id ? this.props.id : ""
       let url  = "http://127.0.0.1:8000/api/parties"
-      const {cpf, name, mail, phone} = this.state
+      const {cpf, name, lastname, mail, phone} = this.state
       // console.log("state",this.state)
       let data = {}
       data.cpf     = cpf 
       data.name   = name
       data.mail   = mail
       data.phone   = phone
+      data.lastname   = lastname
 
       // if(id){
       //   let url  = `http://127.0.0.1:8000/api/parties/${id}`
@@ -118,7 +121,7 @@ class Party extends Component {
       
     render() {
       const {list} = this.props
-      const {cpf, name, mail, phone, searchInput, search, parties} = this.state
+      const {cpf, name, lastname, mail, phone, searchInput, search, parties} = this.state
       const optionsParties = parties.map((party)=>{
         return <option value={party.name}/>
       })
@@ -140,6 +143,10 @@ class Party extends Component {
                   <div className="form-group files">
                     <label>Nome</label>
                     <input type="text" name="name" className="form-control" value={name} onChange={this.handleInputChange}/>
+                  </div>
+                  <div className="form-group files">
+                    <label>Sobrenome</label>
+                    <input type="text" name="lastname" className="form-control" value={lastname} onChange={this.handleInputChange}/>
                   </div>
                   <div className="form-group files">
                     <label>E-mail</label>
