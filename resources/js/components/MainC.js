@@ -8,12 +8,27 @@ import SearchParty from './SearchParty';
 import ListParty from './ListParty';
 import SearchContract from './SearchContract';
 import ListContract from './ListContract';
+import Loading from './Loading';
 
 class MainC extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      loading: false
+    }
+    this.setLoading = this.setLoading.bind(this)
+  }
+
+  setLoading(status){
+    this.setState({
+      loading: !this.state.loading
+    })
+  }
 
   render() {
     return ( 
       <BrowserRouter>
+        {this.state.loading && <Loading/>}  
         <div>
             <nav className="navbar navbar-light navbar-expand-md navigation-clean">
                 <div className="container"><Link to="/" className="navbar-brand" >Contraktor</Link><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button>
@@ -49,7 +64,7 @@ class MainC extends Component {
               <main>
                 <Route exact path="/contract" component={OperationContract}/>
                 <Route exact path="/search-party" component={SearchParty}/>
-                <Route exact path="/search-contract" component={SearchContract}/>
+                <Route exact path="/search-contract" render={(props) => <SearchContract {...props} toogleLoading={this.setLoading} />}/>
                 <Route exact path="/contract/:action" component={OperationContract}/>
                 <Route exact path="/contract/:action/:id" component={OperationContract}/>
                 <Route exact path="/party" component={OperationParty}/>

@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import Info from './Info';
 import IconSearch from './IconSearch';
+
 
 class SearchContract extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class SearchContract extends Component {
 
   handleSubmitSearch(e){
     e.preventDefault()
+    this.props.toogleLoading()
     this.getData()
   }
 
@@ -41,11 +43,13 @@ class SearchContract extends Component {
     axios.get(url)
       .then((response) => {
         this.setState({searchResult: response.data}, ()=> console.log(response));
+        this.props.toogleLoading()
       })
   }
 
     render() {
     return ( 
+      <Fragment>
       <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -53,7 +57,7 @@ class SearchContract extends Component {
                 <h1 className="hero__title">Pesquise os <strong>contratos</strong> cadastrados</h1>
               </div>
               <div id="searchform--one" className="form-group has-search">
-                <span className="fa fa-search form-control-feedback"></span>
+                {/* <span className="fa fa-search form-control-feedback"></span> */}
                 <button onClick={this.handleSubmitSearch} className="searchform-one__hidden-button">
                   <IconSearch id="search-contract__icon--search"/>
                 </button>
@@ -65,7 +69,8 @@ class SearchContract extends Component {
               (this.state.searchResult).length != 0 && <Table getData={this.getData} data={this.state.searchResult}/>
             }
           </div>
-        </div>    
+        </div>
+      </Fragment>    
     );
   }
 }
