@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import axios from 'axios';
 import Contract from './Contract';
 import Party from './Party';
 import SearchParty from './SearchParty';
@@ -10,7 +9,7 @@ import SearchContract from './SearchContract';
 import ListContract from './ListContract';
 import Loading from './Loading';
 
-class MainC extends Component {
+class Main extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -88,7 +87,6 @@ class MainC extends Component {
 
 const OperationContract = ({match}) => {
   console.log(match)
-  const path = match.params.path
   const action = match.params.action
   const id     = match.params.id
   return(
@@ -100,7 +98,6 @@ const OperationContract = ({match}) => {
 
 const OperationParty = ({match}) => {
   console.log(match)
-  const path = match.params.path
   const action = match.params.action
   const id     = match.params.id
   return(
@@ -110,16 +107,6 @@ const OperationParty = ({match}) => {
   )
 }
 
-// const Contract = ()=> {
-//   return <h1>Contract</h1>
-// }
-
-// const Party = ()=> {
-//   return <h1>Party</h1>
-// }
-
-export default MainC;
-
 if (document.getElementById('root')) {
-    ReactDOM.render( < MainC / > , document.getElementById('root'));
+    ReactDOM.render( < Main /> , document.getElementById('root'));
 }
