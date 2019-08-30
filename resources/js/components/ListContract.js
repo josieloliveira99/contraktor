@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { PDFObject } from 'react-pdfobject';
 import Modal from './Modal';
 import IconUser from './IconUser';
+import IconCalendar from './IconCalendar';
 
 
 class ListContract extends Component {
@@ -39,8 +40,8 @@ class ListContract extends Component {
         .then((response) => {
           this.setState({
             contractTitle: response.data.title,
-            contractStart: moment(response.data.start_at).format('YYYY-MM-DD'),
-            contractEnd: moment(response.data.start_end).format('YYYY-MM-DD'),
+            contractStart: moment(response.data.start_at).format('DD/MM/YYYY'),
+            contractEnd: moment(response.data.start_end).format('DD/MM/YYYY'),
             pdf_file: response.data.pdf_file,
             parties: response.data.parties
           })
@@ -148,18 +149,36 @@ class ListContract extends Component {
     <div className="container">
       <div className="row">
         <div className="col-md-12">
-          <h1>{contractTitle}</h1>
-          <h5>Partes Envolvidas</h5>
-          <div className="list-contract__party">
+          <div className="hero">
+            <h1 className="hero__title upper">{contractTitle}</h1>
+          </div>
+          <h5 className="primary-text">Duração</h5>
+          <div className="date-contract">
+            <div className="date-contract__start">
+              <p>Início</p>
+              <IconCalendar/>&nbsp;&nbsp;{contractStart}
+            </div>
+            <div className="date-contract__end">
+              <p>Término</p>
+              <IconCalendar/>&nbsp;&nbsp;{contractEnd}
+            </div>
+          </div>
+          <h5 className="primary-text">Partes associadas</h5>
+          <div style={{margin: "0"}} className="list-contract__party">
           {
             parties.map((party)=>{
               return <div className=""><IconUser/>&nbsp;&nbsp;{party.name}</div>
             })
           }
           </div>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
-            Abrir modal de demonstração
-          </button>
+          {/* <button type="button" class="btn btn--modal" data-toggle="modal" data-target="#contractModal">
+            Visualizar contrato
+          </button> */}
+          <div class="col-md-12 pull-right">
+            <button width="100%" type="button" class="btn btn--modal btn-info" data-toggle="modal" data-target="#contractModal">
+            Visualizar contrato
+            </button>
+          </div>
           {/* <div className="list-contract">
             <h3>{contractTitle}</h3>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
@@ -188,10 +207,10 @@ class ListContract extends Component {
             <br/>
           </div>  */}
         </div>
-        {console.log("teste",`http://127.0.0.1:8000/storage/${pdf_file}`)}
       </div>
-      <Modal documentTitle={contractTitle}><PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${pdf_file}`} /></Modal>
-      {console.log(`http://127.0.0.1:8000/storage/${pdf_file.pdf}`)}
+      <Modal documentTitle={contractTitle}>
+        <PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${pdf_file}`} />
+      </Modal>
     </div>
     );
   }

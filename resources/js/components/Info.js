@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-const Info = (props)=>{
+const Info = ({style,text})=>{
 return(
-  <div className="info">
-    <p className="info__text">{props.text}</p>
+  <div style={{style}}className="info">
+    <p className="info__text">{text}</p>
   </div>
 )}
 

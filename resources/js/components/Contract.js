@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
 import Calendar from './Calendar';
+import {format} from 'date-fns/esm'
 
 class Contract extends Component {
 
@@ -45,7 +46,7 @@ class Contract extends Component {
         });
       }  
 
-      console.log(this.state)
+      // console.log(this.state)
 
       let urlParties = `http://127.0.0.1:8000/api/parties`
       axios.get(urlParties)
@@ -54,6 +55,15 @@ class Contract extends Component {
           parties: response.data
         })
       });
+    }
+
+    /*
+    =============================================================================
+    */
+
+    componentWillUpdate(nextProps, nextState){
+      console.log("nextProps",nextProps)
+      console.log("nextState",nextState)
     }
 
     /*
@@ -142,7 +152,9 @@ class Contract extends Component {
     */
 
     getStartDateCalendar(e){
-      console.log(e)
+      this.setState({
+        contractStart:  moment(e).format('YYYY-MM-DD')
+      })
     }
 
     /*
@@ -150,7 +162,9 @@ class Contract extends Component {
     */
 
     getEndDateCalendar(e){
-      console.log(e)
+      this.setState({
+        contractEnd:  moment(e).format('YYYY-MM-DD')
+      })
     }
 
     /*
@@ -171,7 +185,7 @@ class Contract extends Component {
         <div className="hero">
           <h1 className="hero__title">Cadastrar <strong>contrato</strong></h1>
         </div>
-        <form method = "post">
+        <form>
                   <div className = "form-group files">
                     <label> Título </label> 
                     <input type = "text" name = "contractTitle" className = "form-control" value={contractTitle} onChange = {this.handleInputChange}/> 
