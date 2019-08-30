@@ -194,9 +194,14 @@ class ListParty extends Component {
                       {contract.title}
                     </button>
                   </div>
-                  <Modal id={contract.id} documentTitle="teste">
+                  <Modal id={contract.id} documentTitle={contract.title}>
                     {
                       extension == "pdf" && <PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${contract.pdf_file}`} />
+                    }
+                    {
+                      extension == "docx" && <FileViewer fileType={extension}
+                                                        filePath={`http://127.0.0.1:8000/storage/${contract.pdf_file}`}
+                      />
                     }
                   </Modal>
                 </Fragment>
