@@ -6,6 +6,7 @@ import { PDFObject } from 'react-pdfobject';
 import Modal from './Modal';
 import IconUser from './IconUser';
 import IconCalendar from './IconCalendar';
+import FileViewer from 'react-file-viewer';
 
 
 class ListContract extends Component {
@@ -145,6 +146,11 @@ class ListContract extends Component {
       })
       console.log("props",props)
       console.log("state",this.state)
+      const fileName = pdf_file;
+      const regex = new RegExp('[^.]+$');
+      // let extension = fileName.match(regex); 
+      const extension = fileName.split('.')[1]
+      //console.log(fileName.split('.').slice(0, -1))
       return (
     <div className="container">
       <div className="row">
@@ -209,7 +215,14 @@ class ListContract extends Component {
         </div>
       </div>
       <Modal documentTitle={contractTitle}>
-        <PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${pdf_file}`} />
+        {
+          extension == "pdf" && <PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${pdf_file}`} />
+        }
+        {
+          extension == "docx" && <FileViewer fileType={extension}
+                                             filePath={`http://127.0.0.1:8000/storage/${pdf_file}`}
+          />
+        }
       </Modal>
     </div>
     );

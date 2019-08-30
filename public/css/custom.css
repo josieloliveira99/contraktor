@@ -249,10 +249,10 @@ button:focus {
   border-radius: 100px; */
 }
 
-/* .btn--modal:focus{
-  box-shadow: none
+.btn--modal:focus{
+  box-shadow: none !important
 }
-
+/*
 .btn--modal:hover{
   background-color: #1e6592;
   color: #fff;
