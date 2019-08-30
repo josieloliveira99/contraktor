@@ -1,72 +1,107 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## Contraktor
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Aplicativo realizado como parte de processo seletivo feito em React (frontend) e Laravel (api).
 
-## About Laravel
+O que ele não realiza:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Autenticação de usuários.
+- Validação dos campos de formulários.
+- Validação dos campos de busca.
+- Validação do tipo de arquivo a ser submetido via upload.
+- Busca complexa no banco de dados.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O que ele realiza:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Cadastro de partes e contratos.
+- Upload de arquivo de pdf/docx como parte do cadastro de contrato.
+- Visualização do arquivo submetido via upload.
+- Recuperação e visualização das partes cadastradas.
+- Recuperação e visualização dos contratos cadastrados.
+- Recuperação do relacionamento entre as partes e os contratos.
 
-## Learning Laravel
+## Etapas para a instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Através do terminal clone o repositório com o comando:
+```
+git clone git@github.com:josieloliveira99/contraktor.git
+```
+Entre no diretório onde o projeto foi clonado e através do terminal execute os seguinte comandos:
+```
+composer install
+```
+```
+npm run dev
+```
+```
+npm install
+```
+Crie um banco de dados para hospedar os dados da aplicação
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1400 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Copie o arquivo .env.example, mude seu nome para .env, e altere os seguintes dados:
 
-## Laravel Sponsors
+```
+DB_DATABASE= "nome do banco de dados criado"
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+DB_USERNAME= "usuário do banco de dados"
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+DB_PASSWORD= "senha do banco de dados"
+```
 
-## Contributing
+No terminal execute os seguintes comandos:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+``` 
+php artisan generate:key
+```
+``` 
+make migrations
+```
 
-## Security Vulnerabilities
+Ao executar os próximos comandos, será habilitado um servidor no endereço http://127.0.0.1:8000 onde será possível acessar o aplicativo por esta url
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+``` 
+php artisan serve
+```
 
-## License
+Caso queira modificar o conteúdo dos arquivos do React rodar o seguinte comando 
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+``` 
+npm run watch
+```
+
+## Orientações
+
+Ao iniciar o aplicativo o banco de dados estará em branco.
+
+Após ter algum item cadastrado será possível pesquisá-lo. Como o campo de busca está sem validação, caso clique no botão de buscar sem que algo tenha sido digitado, serão retornados todos os registros. Para se realizar a busca é necessário digitar exatamente com a mesma grafia em que o item foi cadastrado ou pelo menos com algumas palavras sequenciais tal qual foi cadastrado. Exemplo de item cadastrado:
+
+```
+Adesão ao plano de saúde
+```
+
+Para recuperá-lo deve-se digitar:
+
+```
+Adesão ao plano de saúde
+```
+ou
+```
+Adesão ao plano
+```
+ou
+```
+plano de saúde
+```
+Não se deve digitar por exemplo:
+
+```
+adesão plano
+```
+Para o cadastro de items todos os dados devem ser preenchidos, inclusive o campo de data no cadastro de contratos. Deve-se clicar no campo e escolher uma data, mesmo que o campo já venha preenchido por default.
+
+As páginas de listagem de itens, caso sejam atualizadas no navegador ou caso tenham seu endereço digitado diretamente na barra de url não funcionarão e deverão apresentar uma página em branco. Para retornar ao aplicativo é necessário voltar para a página inicial do servidor, ou seja, a url base.
+
+Foi utilizada a sintaxe mais antiga do React para a codificação dos componentes pois para utilizar a nova sintaxe eram necessárias configurações extras que ainda não tenho total domínio e que, portanto, demandariam um tempo maior para o desenvolvimento da aplicação.
+
+
+
+
