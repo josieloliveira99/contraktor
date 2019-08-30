@@ -41,7 +41,7 @@ class ListContract extends Component {
             contractTitle: response.data.title,
             contractStart: moment(response.data.start_at).format('YYYY-MM-DD'),
             contractEnd: moment(response.data.start_end).format('YYYY-MM-DD'),
-            file: response.data.pdf_file,
+            pdf_file: response.data.pdf_file,
             parties: response.data.parties
           })
 
@@ -142,7 +142,8 @@ class ListContract extends Component {
       const options = parties.map(function(option){
         return {value: option.id, label: option.name}
       })
-
+      console.log("props",props)
+      console.log("state",this.state)
       return (
     <div className="container">
       <div className="row">
@@ -187,8 +188,10 @@ class ListContract extends Component {
             <br/>
           </div>  */}
         </div>
+        {console.log("teste",`http://127.0.0.1:8000/storage/${pdf_file}`)}
       </div>
-      <Modal documentTitle={contractTitle}><PDFObject height="700px" url={`http://127.0.0.1:8000/${pdf_file}`} /></Modal>
+      <Modal documentTitle={contractTitle}><PDFObject height="700px" url={`http://127.0.0.1:8000/storage/${pdf_file}`} /></Modal>
+      {console.log(`http://127.0.0.1:8000/storage/${pdf_file.pdf}`)}
     </div>
     );
   }
