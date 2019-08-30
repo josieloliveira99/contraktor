@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Info from './Info';
 import IconSearch from './IconSearch';
 import IconView from './IconView';
 import IconDelete from './IconDelete';
 import moment from 'moment';
-
 
 class SearchContract extends Component {
   constructor(props) {
@@ -24,8 +22,6 @@ class SearchContract extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.handleSubmitSearch = this.handleSubmitSearch.bind(this)
     this.getData = this.getData.bind(this)
-    
-    // this.toDelete = this.toDelete.bind(this)
   }  
 
   handleSearchChange(event) {
@@ -60,7 +56,6 @@ class SearchContract extends Component {
                 <h1 className="hero__title">Pesquise os <strong>contratos</strong> cadastrados</h1>
               </div>
               <div id="searchform--one" className="form-group has-search">
-                {/* <span className="fa fa-search form-control-feedback"></span> */}
                 <button onClick={this.handleSubmitSearch} className="searchform-one__hidden-button">
                   <IconSearch id="search-contract__icon--search"/>
                 </button>
@@ -106,8 +101,6 @@ class SearchContract extends Component {
                   <th>Título</th>
                   <th>Data de início</th>
                   <th>Data de encerramento</th>
-                  {/* <th>Partes envolvidas</th> */}
-                  {/* <th>Editar</th> */}
                   <th className="center">Excluir</th>
                   <th className="center">Visualizar</th>
               </tr>
@@ -121,10 +114,8 @@ class SearchContract extends Component {
                     <td>{data.title}</td>
                     <td>{moment(data.start_at).format('DD/MM/YYYY')}</td>
                     <td>{moment(data.end_at).format('DD/MM/YYYY')}</td>
-                    {/* <td>{console.log(data)}</td> */}
                     <td className="center"><span className="pointer" onClick={this.toDelete.bind(this,data.id)} ><IconDelete/></span></td>
                     <td className="center"><Link to={`contract/list/${data.id}`}><IconView/></Link></td>
-                    {/* <td><Link to={`/contract/edit/${data.id}`}>X</Link></td> */}
                   </tr>
                   </React.Fragment>
                 )
@@ -133,9 +124,7 @@ class SearchContract extends Component {
           </tbody>
       </table>
     )
-  }
-  
-  
+  }  
 }
 
 export default SearchContract;

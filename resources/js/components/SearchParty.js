@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Info from './Info';
 import IconSearch from './IconSearch';
@@ -31,9 +30,7 @@ class SearchParty extends Component {
   handleSubmitSearch(e){
     e.preventDefault()
     this.props.toogleLoading()
-    //console.log("submeteu")
     const {searchInputValue} = this.state 
-    //console.log(searchInputValue)
     let url  = `http://127.0.0.1:8000/api/search/party?q=${searchInputValue}`
     axios.get(url)
       .then((response) => {
@@ -42,7 +39,7 @@ class SearchParty extends Component {
       })
   }
 
-    render() {
+  render() {
     return ( 
       <div className="container">
           <div className="row">
@@ -51,7 +48,6 @@ class SearchParty extends Component {
                 <h1 className="hero__title">Pesquise as <strong>partes</strong> cadastradas</h1>
               </div>
               <div id="searchform--one" className="form-group has-search">
-                {/* <span className="fa fa-search form-control-feedback"></span> */}
                 <button onClick={this.handleSubmitSearch} className="searchform-one__hidden-button">
                   <IconSearch id="search-contract__icon--search"/>
                 </button>
@@ -69,7 +65,6 @@ class SearchParty extends Component {
 }
 
 const Table = (props)=>{
-  //console.log(props)
   const parties = props.data
   return(
     <table id="table-result-search" className="table table-striped table-bordered" cellSpacing="0" width="100%">
