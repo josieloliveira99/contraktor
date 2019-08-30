@@ -3,10 +3,10 @@ import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
 import { PDFObject } from 'react-pdfobject';
+import FileViewer from 'react-file-viewer';
 import Modal from './Modal';
 import IconUser from './IconUser';
 import IconCalendar from './IconCalendar';
-import FileViewer from 'react-file-viewer';
 
 
 
@@ -145,10 +145,10 @@ class ListContract extends Component {
       const options = parties.map(function(option){
         return {value: option.id, label: option.name}
       })
-      console.log("props",props)
-      console.log("state",this.state)
+      //console.log("props",props)
+      //console.log("state",this.state)
       const fileName = pdf_file;
-      const regex = new RegExp('[^.]+$');
+      //const regex = new RegExp('[^.]+$');
       // let extension = fileName.match(regex); 
       const extension = fileName.split('.')[1]
       //console.log(fileName.split('.').slice(0, -1))

@@ -79,7 +79,7 @@ const Table = (props)=>{
                 <th>CPF</th>
                 <th>E-mail</th>
                 <th>Telephone</th>
-                {/* <th>Editar</th> */}
+                <th>Visualizar</th>
             </tr>
         </thead>
         <tbody>
@@ -93,7 +93,7 @@ const Table = (props)=>{
                   <td>{data.cpf}</td>
                   <td>{data.mail}</td>
                   <td>{data.phone}</td>
-                  {/* <td><Link to={`/party/edit/${data.id}`}>X</Link></td> */}
+                  <td><Link to={`/party/list/${data.id}`}>X</Link></td>
                 </tr>
                 </React.Fragment>
               )

@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Modal = ({children, documentTitle})=>{
+const Modal = ({children, documentTitle, id})=>{
+const modalId = id ? `contractModal${id}` : "contractModal"
 return(
-  <div className="modal fade" id="contractModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal fade" id={modalId} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
