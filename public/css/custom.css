@@ -274,3 +274,11 @@ button:focus {
   z-index: 100000;
 }
 
+.center{
+  text-align:center
+}
+
+.pointer{
+  cursor: pointer
+}
+

@@ -4,6 +4,9 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import Info from './Info';
 import IconSearch from './IconSearch';
+import IconView from './IconView';
+import IconDelete from './IconDelete';
+import moment from 'moment';
 
 
 class SearchContract extends Component {
@@ -66,7 +69,7 @@ class SearchContract extends Component {
             </div>
             <Info text="A pesquisa deve ser efetuada pelo título exato do contrato."/>
             {
-              (this.state.searchResult).length != 0 && <Table getData={this.getData} data={this.state.searchResult}/>
+              (this.state.searchResult).length != 0 && <Table toogleLoading={this.props.toogleLoading} getData={this.getData} data={this.state.searchResult}/>
             }
           </div>
         </div>
@@ -88,6 +91,7 @@ class SearchContract extends Component {
       axios.delete(url)
         .then((response) => {
           console.log(response);
+          this.props.toogleLoading()
           this.props.getData()
         })
     }
@@ -102,10 +106,10 @@ class SearchContract extends Component {
                   <th>Título</th>
                   <th>Data de início</th>
                   <th>Data de encerramento</th>
-                  <th>Partes envolvidas</th>
+                  {/* <th>Partes envolvidas</th> */}
                   {/* <th>Editar</th> */}
-                  <th>Visualizar</th>
-                  <th>Excluir</th>
+                  <th className="center">Excluir</th>
+                  <th className="center">Visualizar</th>
               </tr>
           </thead>
           <tbody>
@@ -115,12 +119,12 @@ class SearchContract extends Component {
                   <React.Fragment>
                   <tr key={data.id}>
                     <td>{data.title}</td>
-                    <td>{data.start_at}</td>
-                    <td>{data.end_at}</td>
-                    <td>{console.log(data)}</td>
-                    <td><Link to={`contract/list/${data.id}`}>0</Link></td>
+                    <td>{moment(data.start_at).format('DD/MM/YYYY')}</td>
+                    <td>{moment(data.end_at).format('DD/MM/YYYY')}</td>
+                    {/* <td>{console.log(data)}</td> */}
+                    <td className="center"><span className="pointer" onClick={this.toDelete.bind(this,data.id)} ><IconDelete/></span></td>
+                    <td className="center"><Link to={`contract/list/${data.id}`}><IconView/></Link></td>
                     {/* <td><Link to={`/contract/edit/${data.id}`}>X</Link></td> */}
-                    <td><button onClick={this.toDelete.bind(this,data.id)} >X</button></td>
                   </tr>
                   </React.Fragment>
                 )
