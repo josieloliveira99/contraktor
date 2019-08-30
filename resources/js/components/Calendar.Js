@@ -1,15 +1,9 @@
 import React from "react";
 import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import {format, compareAsc} from 'date-fns/esm'
+import { registerLocale } from  "react-datepicker";
 import pt from 'date-fns/locale/pt';
-registerLocale('pt', pt)
-
- 
 import "react-datepicker/dist/react-datepicker.css";
- 
-// CSS Modules, react-datepicker-cssmodules.css
-// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+registerLocale('pt', pt)
  
 class Calendar extends React.Component {
   constructor(props) {

@@ -3,7 +3,6 @@ import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
 import Calendar from './Calendar';
-import {format} from 'date-fns/esm'
 
 class Contract extends Component {
 
@@ -31,22 +30,7 @@ class Contract extends Component {
     */
     
     componentDidMount(){
-      // let id = this.props.id ? this.props.id : ''
-      // //console.log(id)
-      // if(this.props.id){
-      //   let url = `http://127.0.0.1:8000/api/contracts/${id}`
-      //   axios.get(url)
-      //   .then((response) => {
-      //     this.setState({
-      //       contractTitle: response.data.title,
-      //       contractStart: moment(response.data.start_at).format('YYYY-MM-DD'),
-      //       contractEnd: moment(response.data.start_end).format('YYYY-MM-DD'),
-      //       file: response.data.pdf_file
-      //     })
-      //   });
-      // }  
 
-      // console.log(this.state)
       this.props.toogleLoading()
       let urlParties = `http://127.0.0.1:8000/api/parties`
       axios.get(urlParties)
@@ -57,15 +41,6 @@ class Contract extends Component {
         })
       });
     }
-
-    /*
-    =============================================================================
-    */
-
-    // componentWillUpdate(nextProps, nextState){
-    //   console.log("nextProps",nextProps)
-    //   console.log("nextState",nextState)
-    // }
 
     /*
     =============================================================================
@@ -84,7 +59,6 @@ class Contract extends Component {
 
     onChangeSelect(selectedParty){
       this.setState({ selectedParty });
-      console.log(`Option selected:`, selectedParty);
     };
 
     /*
@@ -116,7 +90,6 @@ class Contract extends Component {
 
     fileUpload(file){
       this.props.toogleLoading()
-      // let id = this.props.id ? this.props.id : ''
       const {archive, contractStart, contractEnd, contractTitle, selectedParty} = this.state
       const data = new FormData()
       data.append('file', archive)
@@ -127,27 +100,17 @@ class Contract extends Component {
       data.append('pivot', JSON.stringify(selectedParty))
       const url = "http://127.0.0.1:8000/api/contracts"
 
-      // if(id){
-      //   let url  = `http://127.0.0.1:8000/api/contracts/${id}`
-      //   data.append('_method', 'PUT');
-      //   axios.post(url, data)
-      //   .then(function(response){
-      //     console.log(response)
-      //   })
-      // }else{
-        axios.post(url, data)
-        .then((response) => {
-          if(response.status == 201){
-            this.props.toogleLoading()
-            // jQuery("input").val('')
-            alert("cadastrado com sucesso")
-            window.location.href="/contract";
-          }else{
-            this.props.toogleLoading()
-            alert("ocorreu um erro ao cadastrar")
-          }
-        })
-      // }
+      axios.post(url, data)
+      .then((response) => {
+        if(response.status == 201){
+          this.props.toogleLoading()
+          alert("cadastrado com sucesso")
+          window.location.href="/contract";
+        }else{
+          this.props.toogleLoading()
+          alert("ocorreu um erro ao cadastrar")
+        }
+      })
     }
 
     /*
@@ -175,59 +138,62 @@ class Contract extends Component {
     */
     
     render() {
-      const props = this.props
-      const {contractTitle, contractStart, contractEnd, parties} = this.state
+      const {contractTitle, parties} = this.state
       const options = parties.map(function(option){
         return {value: option.id, label: option.name}
       })
 
       return (
         <div className="container">
-      <div className="row">
-        <div className="col-md-12">
-        <div className="hero">
-          <h1 className="hero__title">Cadastrar <strong>contrato</strong></h1>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="hero">
+                <h1 className="hero__title">Cadastrar <strong>contrato</strong></h1>
+              </div>
+              <form>
+                <div className = "form-group files">
+                  <label> Título </label> 
+                  <input type = "text" name = "contractTitle" className = "form-control" value={contractTitle} onChange = {this.handleInputChange}/> 
+                </div> 
+                <div className = "form-group files">
+                  <label> Partes </label> 
+                  {
+                    <Select
+                      name="parties_in_contract"
+                      isMulti
+                      isSearchable
+                      options={options}
+                      onChange={this.onChangeSelect}
+                    />
+                  }
+                </div> 
+                <div className = "form-group files">
+                  <label> Começa em </label> 
+                  <Calendar getDate={this.getStartDateCalendar}/>
+                </div> 
+                <div className = "form-group files">
+                  <label> Termina em </label> 
+                  <Calendar getDate={this.getEndDateCalendar}/>
+                </div> 
+                <div className = "form-group files">
+                  <label>Selecione o contrato</label> 
+                  <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
+                </div> 
+                <div className = "col-md-12 pull-right">
+                  <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Cadastrar</button>
+                </div> 
+              </form>
+            </div>
+          </div>
         </div>
-        <form>
-                  <div className = "form-group files">
-                    <label> Título </label> 
-                    <input type = "text" name = "contractTitle" className = "form-control" value={contractTitle} onChange = {this.handleInputChange}/> 
-                  </div> 
-                  <div className = "form-group files">
-                    <label> Partes </label> 
-                    {
-                      <Select
-                        name="parties_in_contract"
-                        isMulti
-                        isSearchable
-                        options={options}
-                        onChange={this.onChangeSelect}
-                      />
-                    }
-                  </div> 
-                  <div className = "form-group files">
-                    <label> Começa em </label> 
-                    {/* <input type = "date" name = "contractStart" className = "form-control" value={contractStart} onChange = {this.handleInputChange}/> */}
-                    <Calendar getDate={this.getStartDateCalendar}/>
-                  </div> 
-                  <div className = "form-group files">
-                    <label> Termina em </label> 
-                    {/* <input type = "date" name = "contractEnd" className = "form-control" value={contractEnd} onChange = {this.handleInputChange}/>  */}
-                    <Calendar getDate={this.getEndDateCalendar}/>
-                  </div> 
-                  <div className = "form-group files">
-                    <label>Selecione o contrato</label> 
-                    <input type = "file" name = "file" className = "form-control" onChange = {this.onChangeHandler}/> 
-                  </div> 
-                  <div className = "col-md-12 pull-right">
-                    <button width = "100%" type = "button" className = "btn btn-info" onClick = {this.fileUploadHandler} >Cadastrar</button>
-                  </div> 
-                </form>
-        </div>
-      </div>
-    </div>
     );
   }
 }
 
 export default Contract;
+
+
+ 
+
+  
+
